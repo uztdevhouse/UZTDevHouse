@@ -1,0 +1,206 @@
+diff --git a/index.html b/index.html
+index a7185cc..5eea31f 100644
+--- a/index.html
++++ b/index.html
+@@ -588,9 +588,9 @@
+ </section>
+ 
+ <!-- Contact / CTA Section -->
+-<section id="contact" class="py-24 bg-brand-50 relative">
++<section id="contact" class="py-24 bg-brand-50 dark:bg-slate-950 relative">
+     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+-        <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
++        <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-xl dark:shadow-slate-950/50 border border-transparent dark:border-slate-800/80 overflow-hidden">
+             <div class="grid grid-cols-1 md:grid-cols-2">
+                 <!-- Contact Info -->
+                 <div class="bg-brand-600 p-10 text-white flex flex-col justify-between relative overflow-hidden">
+@@ -623,54 +623,54 @@
+                 
+                 <!-- Contact Form -->
+                 <div class="p-10">
+-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">
++                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                         <span class="hi">हमें मैसेज भेजें</span><span class="en">Send us a message</span>
+                     </h3>
+                     <form id="contactForm" class="space-y-4">
+                         <div>
+-                            <label class="block text-sm font-medium text-gray-700 mb-1">
++                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                 <span class="hi">पूरा नाम</span><span class="en">Full Name</span>
+                             </label>
+-                            <input type="text" name="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition" data-ph-hi="आपका नाम" data-ph-en="John Doe" placeholder="John Doe" required>
++                            <input type="text" name="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition" data-ph-hi="आपका नाम" data-ph-en="John Doe" placeholder="John Doe" required>
+                         </div>
+                         <div>
+-                            <label class="block text-sm font-medium text-gray-700 mb-1">
++                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                 <span class="hi">ईमेल आईडी</span><span class="en">Email Address</span>
+                             </label>
+-                            <input type="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition" data-ph-hi="hello@email.com" data-ph-en="john@company.com" placeholder="john@company.com" required>
++                            <input type="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition" data-ph-hi="hello@email.com" data-ph-en="john@company.com" placeholder="john@company.com" required>
+                         </div>
+                         <div>
+-                            <label class="block text-sm font-medium text-gray-700 mb-1">
++                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                 <span class="hi">क्या सर्विस चाहिए?</span><span class="en">Service Needed</span>
+                             </label>
+-                            <select name="service" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white">
+-                                <option>AI & Automation</option>
+-                                <option>Smart Websites</option>
+-                                <option>App Development</option>
+-                                <option>Digital Marketing</option>
+-                                <option>Other</option>
++                            <select name="service" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white dark:bg-slate-800 dark:text-white">
++                                <option class="dark:bg-slate-800">AI & Automation</option>
++                                <option class="dark:bg-slate-800">Smart Websites</option>
++                                <option class="dark:bg-slate-800">App Development</option>
++                                <option class="dark:bg-slate-800">Digital Marketing</option>
++                                <option class="dark:bg-slate-800">Other</option>
+                             </select>
+                         </div>
+                         <div>
+-                            <label class="block text-sm font-medium text-gray-700 mb-1">
++                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                 <span class="hi">प्रोजेक्ट की डिटेल्स</span><span class="en">Project Details</span>
+                             </label>
+-                            <textarea name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition resize-none" data-ph-hi="अपने प्रोजेक्ट के बारे में बताएं..." data-ph-en="Tell us about your goals..." placeholder="Tell us about your goals..." required></textarea>
++                            <textarea name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition resize-none" data-ph-hi="अपने प्रोजेक्ट के बारे में बताएं..." data-ph-en="Tell us about your goals..." placeholder="Tell us about your goals..." required></textarea>
+                         </div>
+-                        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
++                        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-md shadow-brand-500/20">
+                             <span class="hi" id="btnHi">मैसेज भेजें</span><span class="en" id="btnEn">Send Message</span>
+                         </button>
+                     </form>
+ 
+                     <!-- Success Message Placeholder -->
+-                    <div id="formSuccess" class="hidden mt-4 p-4 bg-green-50 text-green-700 rounded-lg border border-green-200 flex items-center gap-2">
++                    <div id="formSuccess" class="hidden mt-4 p-4 bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-400 rounded-lg border border-green-200 dark:border-green-900/30 flex items-center gap-2">
+                         <i class="ph ph-check-circle text-xl"></i> 
+                         <span class="hi">मैसेज भेज दिया गया है! हम जल्दी ही रिप्लाई करेंगे।</span>
+                         <span class="en">Message sent successfully! We will reply soon.</span>
+                     </div>
+                     
+                     <!-- Error Message Placeholder -->
+-                    <div id="formError" class="hidden mt-4 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200 flex items-center gap-2">
++                    <div id="formError" class="hidden mt-4 p-4 bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 rounded-lg border border-red-200 dark:border-red-900/30 flex items-center gap-2">
+                         <i class="ph ph-warning-circle text-xl"></i> 
+                         <span class="hi">कुछ गलत हो गया। कृपया दोबारा कोशिश करें।</span>
+                         <span class="en">Something went wrong. Please try again.</span>
+@@ -685,19 +685,19 @@
+ 
+ <!-- Footer Pages Containers -->
+ <div id="page-privacy" class="hidden pt-32 pb-24 min-h-[70vh] px-4 max-w-4xl mx-auto">
+-    <a href="#" onclick="showPage('home'); return false;" class="inline-flex mb-8 items-center gap-2 text-brand-600 hover:text-brand-700 font-bold transition">
++    <a href="#" onclick="showPage('home'); return false;" class="inline-flex mb-8 items-center gap-2 text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-bold transition">
+         <i class="ph ph-arrow-left"></i> <span class="hi">वापस जाएं</span><span class="en">Back to Home</span>
+     </a>
+-    <h1 class="text-4xl font-bold text-gray-900 mb-6">
++    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
+         <span class="hi">प्राइवेसी पॉलिसी</span><span class="en">Privacy Policy</span>
+     </h1>
+-    <div class="prose max-w-none text-gray-600 space-y-6 text-lg">
++    <div class="prose max-w-none text-gray-600 dark:text-gray-300 space-y-6 text-lg">
+         <p>
+             <span class="hi">UZTDevHouse की प्राइवेसी पॉलिसी में आपका स्वागत है। आपकी प्राइवेसी हमारे लिए बहुत महत्वपूर्ण है। यह पेज बताता है कि जब आप हमारी सर्विसेज का उपयोग करते हैं तो हम आपकी जानकारी कैसे इकट्ठा और इस्तेमाल करते हैं।</span>
+             <span class="en">Welcome to UZTDevHouse's Privacy Policy. Your privacy is critically important to us. This page outlines the types of personal information that is received and collected by our agency and how it is used to protect you.</span>
+         </p>
+         <div>
+-            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800">
++            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800 dark:text-white">
+                 <span class="hi">हम क्या जानकारी लेते हैं</span><span class="en">Information We Collect</span>
+             </h3>
+             <p>
+@@ -706,7 +706,7 @@
+             </p>
+         </div>
+         <div>
+-            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800">
++            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800 dark:text-white">
+                 <span class="hi">जानकारी का इस्तेमाल</span><span class="en">How We Use Information</span>
+             </h3>
+             <p>
+@@ -718,19 +718,19 @@
+ </div>
+ 
+ <div id="page-terms" class="hidden pt-32 pb-24 min-h-[70vh] px-4 max-w-4xl mx-auto">
+-    <a href="#" onclick="showPage('home'); return false;" class="inline-flex mb-8 items-center gap-2 text-brand-600 hover:text-brand-700 font-bold transition">
++    <a href="#" onclick="showPage('home'); return false;" class="inline-flex mb-8 items-center gap-2 text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-bold transition">
+         <i class="ph ph-arrow-left"></i> <span class="hi">वापस जाएं</span><span class="en">Back to Home</span>
+     </a>
+-    <h1 class="text-4xl font-bold text-gray-900 mb-6">
++    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
+         <span class="hi">टर्म्स ऑफ़ सर्विस</span><span class="en">Terms of Service</span>
+     </h1>
+-    <div class="prose max-w-none text-gray-600 space-y-6 text-lg">
++    <div class="prose max-w-none text-gray-600 dark:text-gray-300 space-y-6 text-lg">
+         <p>
+             <span class="hi">UZTDevHouse की सेवाओं का उपयोग करके, आप इन नियमों और शर्तों से सहमत होते हैं। कृपया हमारे साथ काम शुरू करने से पहले इन्हें ध्यान से पढ़ें।</span>
+             <span class="en">By accessing or using our services at UZTDevHouse, you agree to be bound by these terms. If you disagree with any part of the terms, then you may not access the service.</span>
+         </p>
+         <div>
+-            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800">
++            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800 dark:text-white">
+                 <span class="hi">प्रोजेक्ट और पेमेंट</span><span class="en">Projects & Payments</span>
+             </h3>
+             <p>
+@@ -739,7 +739,7 @@
+             </p>
+         </div>
+         <div>
+-            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800">
++            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800 dark:text-white">
+                 <span class="hi">इंटेलेक्चुअल प्रॉपर्टी</span><span class="en">Intellectual Property</span>
+             </h3>
+             <p>
+@@ -751,39 +751,39 @@
+ </div>
+ 
+ <div id="page-faq" class="hidden pt-32 pb-24 min-h-[70vh] px-4 max-w-4xl mx-auto">
+-    <a href="#" onclick="showPage('home'); return false;" class="inline-flex mb-8 items-center gap-2 text-brand-600 hover:text-brand-700 font-bold transition">
++    <a href="#" onclick="showPage('home'); return false;" class="inline-flex mb-8 items-center gap-2 text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-bold transition">
+         <i class="ph ph-arrow-left"></i> <span class="hi">वापस जाएं</span><span class="en">Back to Home</span>
+     </a>
+-    <h1 class="text-4xl font-bold text-gray-900 mb-6">
++    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
+         <span class="hi">अक्सर पूछे जाने वाले सवाल (FAQ)</span><span class="en">Frequently Asked Questions (FAQ)</span>
+     </h1>
+-    <div class="space-y-8 text-gray-600 mt-10">
+-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+-            <h3 class="text-xl font-bold text-gray-900">
++    <div class="space-y-8 text-gray-600 dark:text-gray-300 mt-10">
++        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm dark:shadow-slate-950/20">
++            <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+                 <span class="hi">हम अपने प्रोजेक्ट की शुरुआत कैसे करें?</span>
+                 <span class="en">How do we start a project?</span>
+             </h3>
+-            <p class="mt-3 text-lg">
++            <p class="mt-3 text-lg text-gray-600 dark:text-gray-300">
+                 <span class="hi">बस होम पेज पर दिए गए कांटेक्ट फॉर्म को भरें। हमारी टीम आपकी रिक्वायरमेंट्स को समझेगी और 24 घंटे के अंदर आपसे संपर्क करेगी।</span>
+                 <span class="en">Simply fill out the contact form with your requirements. Our team will review it and get back to you with a custom strategy within 24 hours.</span>
+             </p>
+         </div>
+-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+-            <h3 class="text-xl font-bold text-gray-900">
++        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm dark:shadow-slate-950/20">
++            <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+                 <span class="hi">क्या आप काम पूरा होने के बाद भी सपोर्ट देते हैं?</span>
+                 <span class="en">Do you offer ongoing support?</span>
+             </h3>
+-            <p class="mt-3 text-lg">
++            <p class="mt-3 text-lg text-gray-600 dark:text-gray-300">
+                 <span class="hi">हाँ, बिल्कुल! हमारे एडवांस्ड और कस्टम प्लान्स में हम आपको प्रोजेक्ट डिलीवर करने के बाद भी पूरी मेंटेनेंस और सपोर्ट देते हैं।</span>
+                 <span class="en">Yes! All our advanced and custom plans include ongoing maintenance and support to ensure your product runs smoothly long after launch.</span>
+             </p>
+         </div>
+-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+-            <h3 class="text-xl font-bold text-gray-900">
++        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm dark:shadow-slate-950/20">
++            <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+                 <span class="hi">आप कौन सी टेक्नोलॉजी यूज़ करते हैं?</span>
+                 <span class="en">What technologies do you use?</span>
+             </h3>
+-            <p class="mt-3 text-lg">
++            <p class="mt-3 text-lg text-gray-600 dark:text-gray-300">
+                 <span class="hi">हम बेस्ट क्वालिटी देने के लिए मॉडर्न फ्रेमवर्क्स (React, Node) और लेटेस्ट AI टेक्नोलॉजी (Gemini) का यूज़ करते हैं।</span>
+                 <span class="en">We leverage cutting-edge AI models, modern web frameworks (React, Tailwind, Node), and robust cloud infrastructure to deliver top-tier solutions.</span>
+             </p>

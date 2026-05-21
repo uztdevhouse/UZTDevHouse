@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UZTDevHouse | AI-Powered E-Services</title>
-    
+
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
+    <!-- Theme Toggle Initialization Script (avoids FOUC) -->
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <!-- Configure Tailwind Theme (Tech Blue theme) -->
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -41,1187 +52,1426 @@
     </script>
 
     <!-- Load Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <!-- Load Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
-        body { font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif; }
-        
+        html.dark {
+            color-scheme: dark;
+        }
+
+        /* Smooth theme transitions for background and borders */
+        * {
+            transition-property: background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 200ms;
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif;
+        }
+
         .gradient-text {
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         /* Language Toggle Logic */
-        body.lang-en .hi { display: none !important; }
-        body.lang-hi .en { display: none !important; }
-        
+        body.lang-en .hi {
+            display: none !important;
+        }
+
+        body.lang-hi .en {
+            display: none !important;
+        }
+
         /* Chat Typing Indicator Animations */
         .typing-dot {
             animation: typing 1.4s infinite ease-in-out both;
         }
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        .typing-dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
         @keyframes typing {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
         }
 
         /* Cinematic Hero Animations */
         @keyframes cinematic-zoom {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
+
         .animate-cinematic {
             animation: cinematic-zoom 25s ease-in-out infinite;
             transform-origin: center center;
         }
-        
+
         @keyframes fade-up {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .animate-fade-up {
             animation: fade-up 1s ease-out forwards;
             opacity: 0;
         }
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
+
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+
+        .delay-300 {
+            animation-delay: 300ms;
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased lang-en"> <!-- Default is English -->
 
-<!-- Navigation -->
-<nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-20">
-            <!-- Logo -->
-            <a href="#" onclick="showPage('home'); window.scrollTo(0,0); return false;" class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
-                <i class="ph ph-cpu text-brand-600 text-3xl"></i>
-                <span class="font-bold text-2xl tracking-tight text-gray-900">UZT<span class="text-brand-600">DevHouse</span></span>
-            </a>
-            
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex space-x-6 items-center">
-                <a href="#home" onclick="showPage('home')" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">
+<body class="bg-gray-50 dark:bg-slate-950 text-gray-800 dark:text-gray-100 antialiased lang-en">
+    <!-- Default is English -->
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#" onclick="showPage('home'); window.scrollTo(0,0); return false;"
+                    class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+                    <i class="ph ph-cpu text-brand-600 text-3xl"></i>
+                    <span class="font-bold text-2xl tracking-tight text-gray-900 dark:text-white">UZT<span
+                            class="text-brand-600">DevHouse</span></span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-6 items-center">
+                    <a href="#home" onclick="showPage('home')"
+                        class="text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition-colors">
+                        <span class="hi">होम</span><span class="en">Home</span>
+                    </a>
+                    <a href="#services" onclick="showPage('home')"
+                        class="text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition-colors">
+                        <span class="hi">सर्विसेज</span><span class="en">Services</span>
+                    </a>
+                    <a href="#pricing" onclick="showPage('home')"
+                        class="text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition-colors">
+                        <span class="hi">प्लान्स</span><span class="en">Pricing</span>
+                    </a>
+                    <a href="#about" onclick="showPage('home')"
+                        class="text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 font-medium transition-colors">
+                        <span class="hi">हमारे बारे में</span><span class="en">About Us</span>
+                    </a>
+
+                    <!-- Language Switcher -->
+                    <button onclick="toggleLang()"
+                        class="flex items-center gap-1 bg-brand-100 dark:bg-brand-950/50 hover:bg-brand-200 dark:hover:bg-brand-900/50 text-brand-700 dark:text-brand-400 px-3 py-1.5 rounded-full font-medium transition-colors text-sm ml-2">
+                        <i class="ph ph-translate text-lg"></i>
+                        <span id="langTextDesktop">हिंदी में पढ़ें</span>
+                    </button>
+
+                    <!-- Theme Toggle Desktop -->
+                    <button onclick="toggleTheme()"
+                        class="flex items-center justify-center bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-200 w-10 h-10 rounded-full transition-colors relative ml-2"
+                        id="theme-toggle-desktop" aria-label="Toggle dark mode">
+                        <i
+                            class="ph ph-sun text-xl absolute transition-all duration-300 rotate-0 scale-100 dark:-rotate-90 dark:scale-0"></i>
+                        <i
+                            class="ph ph-moon text-xl absolute transition-all duration-300 rotate-90 scale-0 dark:rotate-0 dark:scale-100"></i>
+                    </button>
+
+                    <a href="#contact"
+                        class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-full font-medium transition-colors shadow-md shadow-brand-500/30">
+                        <span class="hi">कोटेशन लें</span><span class="en">Get a Quote</span>
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button onclick="toggleLang()"
+                        class="flex items-center justify-center bg-brand-100 dark:bg-brand-950/50 text-brand-700 dark:text-brand-400 w-10 h-10 rounded-full">
+                        <i class="ph ph-translate text-xl"></i>
+                    </button>
+                    <!-- Theme Toggle Mobile -->
+                    <button onclick="toggleTheme()"
+                        class="flex items-center justify-center bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-200 w-10 h-10 rounded-full"
+                        id="theme-toggle-mobile" aria-label="Toggle dark mode">
+                        <i class="ph ph-sun text-xl dark:hidden"></i>
+                        <i class="ph ph-moon text-xl hidden dark:block"></i>
+                    </button>
+                    <button id="mobile-menu-btn"
+                        class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus:outline-none p-2">
+                        <i class="ph ph-list text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 shadow-lg absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" onclick="showPage('home')"
+                    class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-gray-50 dark:hover:bg-slate-800/50 rounded-lg">
                     <span class="hi">होम</span><span class="en">Home</span>
                 </a>
-                <a href="#services" onclick="showPage('home')" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">
+                <a href="#services" onclick="showPage('home')"
+                    class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-gray-50 dark:hover:bg-slate-800/50 rounded-lg">
                     <span class="hi">सर्विसेज</span><span class="en">Services</span>
                 </a>
-                <a href="#pricing" onclick="showPage('home')" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">
+                <a href="#pricing" onclick="showPage('home')"
+                    class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-gray-50 dark:hover:bg-slate-800/50 rounded-lg">
                     <span class="hi">प्लान्स</span><span class="en">Pricing</span>
                 </a>
-                <a href="#about" onclick="showPage('home')" class="text-gray-600 hover:text-brand-600 font-medium transition-colors">
+                <a href="#about" onclick="showPage('home')"
+                    class="block px-3 py-3 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-gray-50 dark:hover:bg-slate-800/50 rounded-lg">
                     <span class="hi">हमारे बारे में</span><span class="en">About Us</span>
                 </a>
-                
-                <!-- Language Switcher -->
-                <button onclick="toggleLang()" class="flex items-center gap-1 bg-brand-100 hover:bg-brand-200 text-brand-700 px-3 py-1.5 rounded-full font-medium transition-colors text-sm ml-2">
-                    <i class="ph ph-translate text-lg"></i>
-                    <span id="langTextDesktop">हिंदी में पढ़ें</span>
-                </button>
-
-                <a href="#contact" class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-full font-medium transition-colors shadow-md shadow-brand-500/30">
+                <a href="#contact" onclick="showPage('home')"
+                    class="block px-3 py-3 text-base font-medium text-brand-600 dark:text-brand-400 hover:bg-gray-50 dark:hover:bg-slate-800/50 rounded-lg">
                     <span class="hi">कोटेशन लें</span><span class="en">Get a Quote</span>
                 </a>
             </div>
-
-            <!-- Mobile menu button -->
-            <div class="md:hidden flex items-center gap-4">
-                <button onclick="toggleLang()" class="flex items-center justify-center bg-brand-100 text-brand-700 w-10 h-10 rounded-full">
-                    <i class="ph ph-translate text-xl"></i>
-                </button>
-                <button id="mobile-menu-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none p-2">
-                    <i class="ph ph-list text-3xl"></i>
-                </button>
-            </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 shadow-lg absolute w-full">
-        <div class="px-4 pt-2 pb-6 space-y-2">
-            <a href="#home" onclick="showPage('home')" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50 rounded-lg">
-                <span class="hi">होम</span><span class="en">Home</span>
-            </a>
-            <a href="#services" onclick="showPage('home')" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50 rounded-lg">
-                <span class="hi">सर्विसेज</span><span class="en">Services</span>
-            </a>
-            <a href="#pricing" onclick="showPage('home')" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50 rounded-lg">
-                <span class="hi">प्लान्स</span><span class="en">Pricing</span>
-            </a>
-            <a href="#about" onclick="showPage('home')" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-brand-600 hover:bg-gray-50 rounded-lg">
-                <span class="hi">हमारे बारे में</span><span class="en">About Us</span>
-            </a>
-            <a href="#contact" onclick="showPage('home')" class="block px-3 py-3 text-base font-medium text-brand-600 hover:bg-brand-50 rounded-lg">
-                <span class="hi">कोटेशन लें</span><span class="en">Get a Quote</span>
-            </a>
-        </div>
-    </div>
-</nav>
+    <!-- Main View Wrapper -->
+    <div id="main-view">
 
-<!-- Main View Wrapper -->
-<div id="main-view">
-
-<!-- Hero Section -->
-<section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-    <!-- Cinematic Background Decoration -->
-    <div class="absolute inset-0 -z-10 overflow-hidden">
-        <div class="w-full h-full animate-cinematic">
-            <div class="absolute inset-0 bg-gradient-to-br from-brand-50 to-white"></div>
-            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-brand-100 blur-3xl opacity-60"></div>
-            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-accent-100 blur-3xl opacity-60"></div>
-        </div>
-    </div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div class="animate-fade-up">
-            <span class="inline-flex items-center gap-2 py-1 px-3 rounded-full bg-brand-100 text-brand-700 text-sm font-semibold mb-6 border border-brand-200">
-                <i class="ph-fill ph-sparkle text-brand-500"></i>
-                <span class="hi">स्मार्ट AI इंटीग्रेशन</span><span class="en">Smart AI Integration</span>
-            </span>
-        </div>
-        
-        <!-- Typewriter Headline -->
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 mb-6 leading-tight animate-fade-up delay-100 min-h-[100px] md:min-h-[120px] flex items-center justify-center max-w-4xl mx-auto">
-            <span>
-                <span id="typewriter-text" class="text-brand-600 drop-shadow-sm"></span><span class="text-brand-600 animate-pulse font-light">|</span>
-            </span>
-        </h1>
-        
-        <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-600 mb-10 animate-fade-up delay-200">
-            <span class="hi">UZTDevHouse में हम AI और बेस्ट स्ट्रेटेजी का यूज़ करते हैं जिससे आपका काम आसान हो और बिज़नेस तेज़ी से आगे बढ़े। सिंपल, फ़ास्ट और बजट-फ्रेंडली!</span>
-            <span class="en">At UZTDevHouse, we use AI and smart strategies to make your work easier and help your business grow fast. Simple, quick, and budget-friendly!</span>
-        </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fade-up delay-300">
-            <a href="#services" class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-lg shadow-brand-500/30 flex items-center justify-center gap-2">
-                <span class="hi">हमारी सर्विसेज देखें</span><span class="en">Explore Services</span> <i class="ph ph-arrow-right"></i>
-            </a>
-            <a href="#contact" class="bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-sm flex items-center justify-center gap-2">
-                <span class="hi">हमसे बात करें</span><span class="en">Talk to us</span>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Services Section -->
-<section id="services" class="py-24 bg-white relative">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-brand-600 font-semibold tracking-wide uppercase text-sm mb-2">
-                <span class="hi">हम क्या करते हैं</span><span class="en">What We Do</span>
-            </h2>
-            <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                <span class="hi">बिज़नेस ग्रोथ के लिए स्मार्ट IT सॉल्यूशंस</span>
-                <span class="en">Smart IT Solutions for Growth</span>
-            </p>
-            <p class="mt-4 max-w-2xl text-lg text-gray-500 mx-auto">
-                <span class="hi">हम नई टेक्नोलॉजी से आपका काम तेज़ और बढ़िया करते हैं।</span>
-                <span class="en">We use the latest technology to do your work faster and better.</span>
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Service Card 1 -->
-            <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300 border border-gray-100 group">
-                <div class="w-14 h-14 bg-brand-100 rounded-xl flex items-center justify-center text-brand-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <i class="ph ph-robot text-3xl"></i>
+        <!-- Hero Section -->
+        <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+            <!-- Cinematic Background Decoration -->
+            <div class="absolute inset-0 -z-10 overflow-hidden">
+                <div class="w-full h-full animate-cinematic">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-brand-50 to-white dark:from-slate-950 dark:to-slate-900">
+                    </div>
+                    <div
+                        class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-brand-100 dark:bg-brand-950/30 blur-3xl opacity-60">
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-accent-100 dark:bg-accent-950/30 blur-3xl opacity-60">
+                    </div>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-3">
-                    <span class="hi">AI और ऑटोमेशन</span><span class="en">AI & Automation</span>
-                </h3>
-                <p class="text-gray-600 leading-relaxed mb-4">
-                    <span class="hi">अपने रोज़ के काम को आटोमेटिक बनाएं और टाइम बचाएं।</span>
-                    <span class="en">Automate your daily tasks and save time with smart AI.</span>
-                </p>
             </div>
 
-            <!-- Service Card 2 -->
-            <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300 border border-gray-100 group">
-                <div class="w-14 h-14 bg-accent-100 rounded-xl flex items-center justify-center text-accent-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <i class="ph ph-devices text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-3">
-                    <span class="hi">शानदार वेबसाइट</span><span class="en">Smart Websites</span>
-                </h3>
-                <p class="text-gray-600 leading-relaxed mb-4">
-                    <span class="hi">आपके बिज़नेस के लिए एकदम बढ़िया और तेज़ वेबसाइट बनवाएं।</span>
-                    <span class="en">Get a fast and beautiful website designed for your business.</span>
-                </p>
-            </div>
-
-            <!-- Service Card 3 -->
-            <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300 border border-gray-100 group">
-                <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <i class="ph ph-trend-up text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-3">
-                    <span class="hi">डिजिटल मार्केटिंग</span><span class="en">Digital Marketing</span>
-                </h3>
-                <p class="text-gray-600 leading-relaxed mb-4">
-                    <span class="hi">ऑनलाइन एड्स और मार्केटिंग से ज़्यादा से ज़्यादा कस्टमर लाएं।</span>
-                    <span class="en">Get more customers with smart online ads and marketing.</span>
-                </p>
-            </div>
-            
-            <!-- Service Card 4 -->
-            <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300 border border-gray-100 group">
-                <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <i class="ph ph-chart-line-up text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-3">
-                    <span class="hi">बिज़नेस डेटा</span><span class="en">Business Analytics</span>
-                </h3>
-                <p class="text-gray-600 leading-relaxed mb-4">
-                    <span class="hi">अपने बिज़नेस के डेटा को समझें और सही फैसले लें।</span>
-                    <span class="en">Understand your data to make better business decisions.</span>
-                </p>
-            </div>
-
-            <!-- Service Card 5 -->
-            <div class="bg-gray-50 rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300 border border-gray-100 group">
-                <div class="w-14 h-14 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <i class="ph ph-device-mobile text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-3">
-                    <span class="hi">ऐप डेवलपमेंट</span><span class="en">App Development</span>
-                </h3>
-                <p class="text-gray-600 leading-relaxed mb-4">
-                    <span class="hi">आपके बिज़नेस के लिए शानदार मोबाइल ऐप्स (iOS और Android)।</span>
-                    <span class="en">High-performance mobile apps for iOS and Android tailored to your business.</span>
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Live AI Demo Section (Instant Growth Strategy) -->
-<section id="ai-demo" class="py-24 bg-gray-900 relative overflow-hidden">
-    <!-- Background glows -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-brand-500/10 blur-[120px] rounded-full pointer-events-none"></div>
-
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center mb-10">
-            <span class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-gray-800 text-brand-400 text-sm font-semibold mb-6 border border-gray-700 shadow-inner">
-                <i class="ph-fill ph-magic-wand text-brand-500 text-lg"></i>
-                <span class="hi">हमारा AI इंजन आज़माएं</span><span class="en">Try Our AI Engine</span>
-            </span>
-            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6">
-                <span class="hi">इंस्टेंट ग्रोथ स्ट्रेटेजी</span><span class="en">Instant Growth Strategy</span>
-            </h2>
-            <p class="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-                <span class="hi">अपने बिज़नेस के बारे में बताएं, और हमारा AI तुरंत आपके लिए 3-स्टेप का कस्टम ग्रोथ प्लान बनाएगा।</span>
-                <span class="en">Tell us about your business, and our Gemini-powered engine will instantly generate a custom 3-step digital transformation plan structured just for you.</span>
-            </p>
-        </div>
-
-        <!-- Input Form -->
-        <form id="strategy-form" class="max-w-3xl mx-auto relative mb-16">
-            <div class="flex flex-col sm:flex-row gap-3 bg-gray-800/80 backdrop-blur-md p-2.5 rounded-2xl border border-gray-700 shadow-2xl focus-within:border-brand-500 focus-within:ring-1 focus-within:ring-brand-500 transition-all">
-                <div class="flex items-center pl-4 text-gray-400">
-                    <i class="ph ph-magnifying-glass text-xl"></i>
-                </div>
-                <input type="text" id="strategy-input" class="flex-1 bg-transparent text-white px-3 py-3 outline-none placeholder-gray-500 text-lg" data-ph-hi="जैसे: मेरी कपड़ों की दुकान है..." data-ph-en="E.g., I run a local clothing store..." placeholder="E.g., I run a local clothing store..." required>
-                <button type="submit" id="strategy-btn" class="bg-brand-600 hover:bg-brand-500 text-white font-bold py-3.5 px-8 rounded-xl transition duration-300 flex items-center justify-center gap-2 whitespace-nowrap shadow-lg shadow-brand-500/20">
-                    <span class="hi" id="stratBtnHi">स्ट्रेटेजी बनाएं</span><span class="en" id="stratBtnEn">Generate Strategy</span>
-                    <i class="ph ph-arrow-right font-bold"></i>
-                </button>
-            </div>
-        </form>
-
-        <!-- Results Area -->
-        <div id="strategy-results" class="hidden transition-all duration-500 ease-in-out">
-            <h3 class="text-center text-xl font-bold text-gray-300 mb-8 uppercase tracking-widest text-sm">
-                <span class="hi">आपका कस्टम AI ब्लूप्रिंट</span><span class="en">Your Custom AI Blueprint</span>
-            </h3>
-            <div id="blueprint-cards" class="grid md:grid-cols-3 gap-6">
-                <!-- Cards will be injected here via JavaScript -->
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Value-Driven Partnership Options -->
-<section id="pricing" class="py-24 bg-white relative border-t border-gray-100 overflow-hidden">
-    <!-- Background decorative blob -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[400px] bg-brand-50 rounded-full blur-3xl opacity-50 -z-10"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-brand-600 font-semibold tracking-wide uppercase text-sm mb-2">
-                <span class="hi">आसान प्लान्स</span><span class="en">Simple Plans</span>
-            </h2>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
-                <span class="hi">अपने बिज़नेस के हिसाब से सही प्लान चुनें</span>
-                <span class="en">Pick the best plan for your business</span>
-            </h2>
-            <p class="text-gray-500 text-lg">
-                <span class="hi">हम AI का यूज़ करते हैं इसलिए हमारे रेट्स एकदम सही हैं। कोई छुपा चार्ज नहीं!</span>
-                <span class="en">We use AI to save costs and give you the best price. No hidden fees!</span>
-            </p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto items-stretch">
-            <!-- Option 1: Essential (Budget Friendly) -->
-            <div class="bg-white rounded-3xl p-10 border border-gray-200 shadow-xl shadow-gray-200/40 hover:-translate-y-2 transition-all duration-300 flex flex-col relative overflow-hidden group">
-                <!-- Large decorative background icon -->
-                <div class="absolute -top-4 -right-4 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-300 rotate-12">
-                    <i class="ph-fill ph-plant text-[10rem] text-brand-600"></i>
-                </div>
-                
-                <div class="w-14 h-14 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 border border-brand-100 mb-6 shadow-sm relative z-10">
-                    <i class="ph ph-leaf text-2xl"></i>
-                </div>
-                
-                <h3 class="text-3xl font-bold text-gray-900 mb-2 relative z-10">
-                    <span class="hi">बेसिक प्लान</span><span class="en">Basic Plan</span>
-                </h3>
-                <p class="text-brand-600 font-bold text-xs mb-4 uppercase tracking-wider relative z-10">
-                    <span class="hi">बजट-फ्रेंडली</span><span class="en">Budget-Friendly Base</span>
-                </p>
-                
-                <div class="mb-2 relative z-10 flex items-baseline">
-                    <span class="line-through text-gray-400 text-2xl mr-2">₹2,999</span>
-                    <span class="text-4xl font-extrabold text-gray-900">₹2,000</span>
-                    <span class="text-gray-500 font-medium ml-2">onwards</span>
-                </div>
-                
-                <div class="mb-6 relative z-10">
-                    <span class="bg-red-50 text-red-600 text-xs font-bold px-2.5 py-1 rounded-md border border-red-200 inline-block">Few days left (Seasonal Offer)</span>
-                </div>
-                
-                <p class="text-gray-700 mb-10 flex-grow text-lg leading-relaxed relative z-10">
-                    <span class="hi">छोटे बिज़नेस और नए स्टार्टअप्स के लिए सबसे बेस्ट। कम बजट में अच्छी सर्विस पाएं।</span>
-                    <span class="en">Perfect for small businesses and startups. Get great service on a low budget.</span>
-                </p>
-                
-                <a href="#contact" class="block w-full text-center bg-gray-900 hover:bg-gray-800 text-white font-bold py-4 px-6 rounded-xl transition duration-300 mt-auto relative z-10 shadow-md">
-                    <span class="hi">शुरू करें</span><span class="en">Start Now</span>
-                </a>
-            </div>
-
-            <!-- Option 2: Advanced -->
-            <div class="bg-gray-900 rounded-3xl p-10 border border-gray-800 shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col relative overflow-hidden group">
-                <!-- Glow effect -->
-                <div class="absolute -top-24 -right-24 w-64 h-64 bg-brand-600 rounded-full blur-[80px] opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
-                
-                <!-- Large decorative background icon -->
-                <div class="absolute -top-4 -right-4 p-8 opacity-[0.03] group-hover:opacity-10 transition-opacity duration-300 rotate-12">
-                    <i class="ph-fill ph-rocket text-[10rem] text-white"></i>
-                </div>
-
-                <div class="absolute top-8 right-8 z-20">
-                    <span class="bg-accent-500 text-gray-900 border border-accent-400 text-xs font-bold uppercase tracking-wider py-1.5 px-4 rounded-full backdrop-blur-sm">
-                        Recommended
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <div class="animate-fade-up">
+                    <span
+                        class="inline-flex items-center gap-2 py-1 px-3 rounded-full bg-brand-100 dark:bg-brand-950/40 text-brand-700 dark:text-brand-300 text-sm font-semibold mb-6 border border-brand-200 dark:border-brand-800/50">
+                        <i class="ph-fill ph-sparkle text-brand-500"></i>
+                        <span class="hi">स्मार्ट AI इंटीग्रेशन</span><span class="en">Smart AI Integration</span>
                     </span>
                 </div>
-                
-                <div class="w-14 h-14 bg-brand-600 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-brand-500/30 relative z-10">
-                    <i class="ph ph-rocket-launch text-2xl"></i>
-                </div>
-                
-                <h3 class="text-3xl font-bold text-white mb-2 relative z-10">
-                    <span class="hi">एडवांस्ड प्लान</span><span class="en">Advanced Plan</span>
-                </h3>
-                <p class="text-accent-400 font-bold text-xs mb-4 uppercase tracking-wider relative z-10">
-                    <span class="hi">पूरी सर्विस</span><span class="en">Full Service</span>
-                </p>
-                
-                <div class="mb-2 relative z-10 flex items-baseline">
-                    <span class="line-through text-gray-500 text-2xl mr-2">₹8,999</span>
-                    <span class="text-4xl font-extrabold text-white">₹4,449</span>
-                    <span class="text-gray-400 font-medium ml-2">onwards</span>
-                </div>
 
-                <div class="mb-6 relative z-10">
-                    <span class="bg-red-500/20 text-red-300 text-xs font-bold px-2.5 py-1 rounded-md border border-red-500/30 inline-block">Few days left (Seasonal Offer)</span>
-                </div>
-                
-                <p class="text-gray-300 mb-10 flex-grow text-lg leading-relaxed relative z-10">
-                    <span class="hi">बड़े बिज़नेस के लिए पूरी डिजिटल सर्विस। हम आपके काम को तेज़ी से बढ़ाने में मदद करेंगे।</span>
-                    <span class="en">Full digital service for growing businesses. We help you scale fast with advanced solutions.</span>
-                </p>
-                
-                <a href="#contact" class="block w-full text-center bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 px-6 rounded-xl transition duration-300 mt-auto relative z-10 shadow-lg shadow-brand-500/25">
-                    <span class="hi">बिज़नेस बढ़ाएं</span><span class="en">Scale Now</span>
-                </a>
-            </div>
+                <!-- Typewriter Headline -->
+                <h1
+                    class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight animate-fade-up delay-100 min-h-[100px] md:min-h-[120px] flex items-center justify-center max-w-4xl mx-auto">
+                    <span>
+                        <span id="typewriter-text" class="text-brand-600 drop-shadow-sm"></span><span
+                            class="text-brand-600 animate-pulse font-light">|</span>
+                    </span>
+                </h1>
 
-            <!-- Option 3: Custom -->
-            <div class="bg-white rounded-3xl p-10 border border-gray-200 shadow-xl shadow-gray-200/40 hover:-translate-y-2 transition-all duration-300 flex flex-col relative overflow-hidden group">
-                <!-- Large decorative background icon -->
-                <div class="absolute -top-4 -right-4 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-300 rotate-12">
-                    <i class="ph-fill ph-buildings text-[10rem] text-brand-600"></i>
-                </div>
-                
-                <div class="w-14 h-14 bg-brand-50 rounded-2xl flex items-center justify-center text-brand-600 border border-brand-100 mb-6 shadow-sm relative z-10">
-                    <i class="ph ph-handshake text-2xl"></i>
-                </div>
-                
-                <h3 class="text-3xl font-bold text-gray-900 mb-2 relative z-10">
-                    <span class="hi">कस्टम प्लान</span><span class="en">Custom Plan</span>
-                </h3>
-                <p class="text-brand-600 font-bold text-xs mb-4 uppercase tracking-wider relative z-10">
-                    <span class="hi">एंटरप्राइज सॉल्यूशंस</span><span class="en">Enterprise Solutions</span>
+                <p
+                    class="mt-4 max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-300 mb-10 animate-fade-up delay-200">
+                    <span class="hi">UZTDevHouse में हम AI और बेस्ट स्ट्रेटेजी का यूज़ करते हैं जिससे आपका काम आसान हो और
+                        बिज़नेस तेज़ी से आगे बढ़े। सिंपल, फ़ास्ट और बजट-फ्रेंडली!</span>
+                    <span class="en">At UZTDevHouse, we use AI and smart strategies to make your work easier and help
+                        your business grow fast. Simple, quick, and budget-friendly!</span>
                 </p>
-                
-                <div class="mb-6 relative z-10 flex items-baseline h-[60px] items-center">
-                    <span class="text-3xl font-extrabold text-gray-900"><span class="hi">आइए बात करें</span><span class="en">Let's Discuss</span></span>
-                </div>
-                
-                <p class="text-gray-700 mb-10 flex-grow text-lg leading-relaxed relative z-10">
-                    <span class="hi">बड़े प्रोजेक्ट्स और कस्टम रिक्वायरमेंट्स के लिए हम आपके साथ मिलकर एक खास स्ट्रेटेजी और प्लान बनाएंगे।</span>
-                    <span class="en">For large projects and custom requirements. We will build a tailored strategy and execution plan just for you.</span>
-                </p>
-                
-                <a href="#contact" class="block w-full text-center bg-gray-900 hover:bg-gray-800 text-white font-bold py-4 px-6 rounded-xl transition duration-300 mt-auto relative z-10 shadow-md">
-                    <span class="hi">संपर्क करें</span><span class="en">Contact Us</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Why Choose Us / About Section -->
-<section id="about" class="py-24 bg-gray-900 text-white overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
-            <div>
-                <h2 class="text-brand-400 font-bold tracking-wide uppercase text-sm mb-2">
-                    <span class="hi">हमें क्यों चुनें?</span><span class="en">Why Choose Us?</span>
-                </h2>
-                <h3 class="text-3xl font-extrabold tracking-tight sm:text-4xl mb-6">
-                    <span class="hi">स्मार्ट टेक्नोलॉजी के साथ तेज़ी से बढ़ें</span>
-                    <span class="en">Grow faster with smart technology</span>
-                </h3>
-                <p class="text-lg text-gray-400 mb-8 leading-relaxed">
-                    <span class="hi">आज के समय में सिर्फ कड़ी मेहनत काफी नहीं है, स्मार्ट वर्क ज़रूरी है। हम AI की मदद से आपके बिज़नेस को आगे बढ़ाते हैं।</span>
-                    <span class="en">Hard work is not enough today, smart work is needed. We help you with AI.</span>
-                </p>
-                
-                <div class="space-y-8">
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-900/40 flex items-center justify-center text-brand-400 mt-1 border border-brand-800/50">
-                            <i class="ph ph-users text-2xl"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold mb-1">
-                                <span class="hi">बेस्ट टीम</span><span class="en">Best Team</span>
-                            </h4>
-                            <p class="text-gray-400">
-                                <span class="hi">हमारे पास लेटेस्ट AI टेक्नोलॉजी की बेस्ट टीम है।</span>
-                                <span class="en">We have the best team for the latest tech.</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-900/40 flex items-center justify-center text-brand-400 mt-1 border border-brand-800/50">
-                            <i class="ph ph-lightning text-2xl"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold mb-1">
-                                <span class="hi">तेज़ काम</span><span class="en">Fast Work</span>
-                            </h4>
-                            <p class="text-gray-400">
-                                <span class="hi">हम AI की मदद से आपका काम बहुत तेज़ी से करते हैं।</span>
-                                <span class="en">We use AI to do your work much faster.</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-900/40 flex items-center justify-center text-brand-400 mt-1 border border-brand-800/50">
-                            <i class="ph ph-wallet text-2xl"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold mb-1">
-                                <span class="hi">सही दाम</span><span class="en">Fair Pricing</span>
-                            </h4>
-                            <p class="text-gray-400">
-                                <span class="hi">हमारे रेट्स एकदम साफ़ हैं, कोई भी छुपा चार्ज नहीं लगेगा।</span>
-                                <span class="en">Clear prices, no hidden charges ever.</span>
-                            </p>
-                        </div>
-                    </div>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fade-up delay-300">
+                    <a href="#services"
+                        class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-lg shadow-brand-500/30 flex items-center justify-center gap-2">
+                        <span class="hi">हमारी सर्विसेज देखें</span><span class="en">Explore Services</span> <i
+                            class="ph ph-arrow-right"></i>
+                    </a>
+                    <a href="#contact"
+                        class="bg-white dark:bg-slate-900 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-800 dark:text-white border border-gray-200 dark:border-slate-800 px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-sm flex items-center justify-center gap-2">
+                        <span class="hi">हमसे बात करें</span><span class="en">Talk to us</span>
+                    </a>
                 </div>
             </div>
-            
-            <div class="mt-16 lg:mt-0 relative">
-                <!-- Decorative glow (Enhanced to match image) -->
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-brand-500/30 blur-[100px] rounded-full pointer-events-none z-0"></div>
-                
-                <!-- Abstract visual code editor / dashboard -->
-                <div class="relative z-10 rounded-2xl bg-slate-800 border border-slate-700 shadow-2xl p-6 aspect-[4/3] flex flex-col justify-between backdrop-blur-sm">
-                    <div class="flex justify-between items-center border-b border-slate-700/80 pb-4">
-                        <div class="flex gap-2">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        </div>
-                        <div class="text-gray-500 text-sm font-mono">analytics.js</div>
-                    </div>
-                    
-                    <div class="flex-1 mt-6 flex flex-col gap-4">
-                        <!-- Top input/bar skeleton -->
-                        <div class="h-8 bg-slate-700 rounded-md w-1/3"></div>
-                        
-                        <!-- Middle dual blocks -->
-                        <div class="flex-1 flex gap-4">
-                            <div class="flex-1 bg-slate-700 rounded-md"></div>
-                            <div class="flex-[2] bg-slate-700 rounded-md"></div>
-                        </div>
-                        
-                        <!-- Bottom trend block -->
-                        <div class="h-24 bg-brand-900/40 border border-brand-800/50 rounded-md flex items-center justify-center text-brand-400">
-                            <i class="ph ph-trend-up text-3xl"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+        </section>
 
-<!-- Contact / CTA Section -->
-<section id="contact" class="py-24 bg-brand-50 relative">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2">
-                <!-- Contact Info -->
-                <div class="bg-brand-600 p-10 text-white flex flex-col justify-between relative overflow-hidden">
-                    <div class="relative z-10">
-                        <h3 class="text-3xl font-bold mb-4">
-                            <span class="hi">क्या आप शुरू करने के लिए तैयार हैं?</span>
-                            <span class="en">Ready to get started?</span>
-                        </h3>
-                        <p class="text-brand-100 mb-8">
-                            <span class="hi">आज ही हमें मैसेज करें और अपने बिज़नेस को नई ऊंचाइयों पर ले जाएं।</span>
-                            <span class="en">Message us today and take your business to new heights.</span>
-                        </p>
-                        
-                        <div class="space-y-6">
-                            <div class="flex items-center gap-4">
-                                <i class="ph ph-envelope-simple text-2xl text-brand-300"></i>
-                                <span>uztdevhouse.business@gmail.com</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <i class="ph ph-phone text-2xl text-brand-300"></i>
-                                <span>+91 8452859543</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <i class="ph ph-map-pin text-2xl text-brand-300"></i>
-                                <span>Mumbai, Maharashtra</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Contact Form -->
-                <div class="p-10">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6">
-                        <span class="hi">हमें मैसेज भेजें</span><span class="en">Send us a message</span>
-                    </h3>
-                    <form id="contactForm" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                <span class="hi">पूरा नाम</span><span class="en">Full Name</span>
-                            </label>
-                            <input type="text" name="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition" data-ph-hi="आपका नाम" data-ph-en="John Doe" placeholder="John Doe" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                <span class="hi">ईमेल आईडी</span><span class="en">Email Address</span>
-                            </label>
-                            <input type="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition" data-ph-hi="hello@email.com" data-ph-en="john@company.com" placeholder="john@company.com" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                <span class="hi">क्या सर्विस चाहिए?</span><span class="en">Service Needed</span>
-                            </label>
-                            <select name="service" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white">
-                                <option>AI & Automation</option>
-                                <option>Smart Websites</option>
-                                <option>App Development</option>
-                                <option>Digital Marketing</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                <span class="hi">प्रोजेक्ट की डिटेल्स</span><span class="en">Project Details</span>
-                            </label>
-                            <textarea name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition resize-none" data-ph-hi="अपने प्रोजेक्ट के बारे में बताएं..." data-ph-en="Tell us about your goals..." placeholder="Tell us about your goals..." required></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
-                            <span class="hi" id="btnHi">मैसेज भेजें</span><span class="en" id="btnEn">Send Message</span>
-                        </button>
-                    </form>
-
-                    <!-- Success Message Placeholder -->
-                    <div id="formSuccess" class="hidden mt-4 p-4 bg-green-50 text-green-700 rounded-lg border border-green-200 flex items-center gap-2">
-                        <i class="ph ph-check-circle text-xl"></i> 
-                        <span class="hi">मैसेज भेज दिया गया है! हम जल्दी ही रिप्लाई करेंगे।</span>
-                        <span class="en">Message sent successfully! We will reply soon.</span>
-                    </div>
-                    
-                    <!-- Error Message Placeholder -->
-                    <div id="formError" class="hidden mt-4 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200 flex items-center gap-2">
-                        <i class="ph ph-warning-circle text-xl"></i> 
-                        <span class="hi">कुछ गलत हो गया। कृपया दोबारा कोशिश करें।</span>
-                        <span class="en">Something went wrong. Please try again.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-</div> <!-- End Main View Wrapper -->
-
-<!-- Footer Pages Containers -->
-<div id="page-privacy" class="hidden pt-32 pb-24 min-h-[70vh] px-4 max-w-4xl mx-auto">
-    <a href="#" onclick="showPage('home'); return false;" class="inline-flex mb-8 items-center gap-2 text-brand-600 hover:text-brand-700 font-bold transition">
-        <i class="ph ph-arrow-left"></i> <span class="hi">वापस जाएं</span><span class="en">Back to Home</span>
-    </a>
-    <h1 class="text-4xl font-bold text-gray-900 mb-6">
-        <span class="hi">प्राइवेसी पॉलिसी</span><span class="en">Privacy Policy</span>
-    </h1>
-    <div class="prose max-w-none text-gray-600 space-y-6 text-lg">
-        <p>
-            <span class="hi">UZTDevHouse की प्राइवेसी पॉलिसी में आपका स्वागत है। आपकी प्राइवेसी हमारे लिए बहुत महत्वपूर्ण है। यह पेज बताता है कि जब आप हमारी सर्विसेज का उपयोग करते हैं तो हम आपकी जानकारी कैसे इकट्ठा और इस्तेमाल करते हैं।</span>
-            <span class="en">Welcome to UZTDevHouse's Privacy Policy. Your privacy is critically important to us. This page outlines the types of personal information that is received and collected by our agency and how it is used to protect you.</span>
-        </p>
-        <div>
-            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800">
-                <span class="hi">हम क्या जानकारी लेते हैं</span><span class="en">Information We Collect</span>
-            </h3>
-            <p>
-                <span class="hi">हम केवल वही जानकारी लेते हैं जो हमें आपको बेहतरीन सर्विस देने के लिए चाहिए होती है (जैसे आपका नाम, ईमेल और प्रोजेक्ट डिटेल्स)। हम आपका डेटा कभी भी किसी दूसरी कंपनी को नहीं बेचते।</span>
-                <span class="en">We only collect information about you if we have a reason to do so—for example, to provide our services, to communicate with you, or to make our services better. We never sell your data to third parties.</span>
-            </p>
-        </div>
-        <div>
-            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800">
-                <span class="hi">जानकारी का इस्तेमाल</span><span class="en">How We Use Information</span>
-            </h3>
-            <p>
-                <span class="hi">हम आपकी जानकारी का इस्तेमाल आपके प्रोजेक्ट को पूरा करने, आपसे बात करने, और आपको सपोर्ट देने के लिए करते हैं। आपकी जानकारी हमारे सुरक्षित सर्वर पर रखी जाती है।</span>
-                <span class="en">We use the information we collect to provide our services, facilitate communication, process transactions, and improve our platform offerings safely and securely.</span>
-            </p>
-        </div>
-    </div>
-</div>
-
-<div id="page-terms" class="hidden pt-32 pb-24 min-h-[70vh] px-4 max-w-4xl mx-auto">
-    <a href="#" onclick="showPage('home'); return false;" class="inline-flex mb-8 items-center gap-2 text-brand-600 hover:text-brand-700 font-bold transition">
-        <i class="ph ph-arrow-left"></i> <span class="hi">वापस जाएं</span><span class="en">Back to Home</span>
-    </a>
-    <h1 class="text-4xl font-bold text-gray-900 mb-6">
-        <span class="hi">टर्म्स ऑफ़ सर्विस</span><span class="en">Terms of Service</span>
-    </h1>
-    <div class="prose max-w-none text-gray-600 space-y-6 text-lg">
-        <p>
-            <span class="hi">UZTDevHouse की सेवाओं का उपयोग करके, आप इन नियमों और शर्तों से सहमत होते हैं। कृपया हमारे साथ काम शुरू करने से पहले इन्हें ध्यान से पढ़ें।</span>
-            <span class="en">By accessing or using our services at UZTDevHouse, you agree to be bound by these terms. If you disagree with any part of the terms, then you may not access the service.</span>
-        </p>
-        <div>
-            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800">
-                <span class="hi">प्रोजेक्ट और पेमेंट</span><span class="en">Projects & Payments</span>
-            </h3>
-            <p>
-                <span class="hi">हम काम शुरू करने से पहले प्रोजेक्ट की पूरी डिटेल और टाइमलाइन तय करते हैं। काम के दौरान कोई भी अतिरिक्त बदलाव के लिए अलग से चार्ज लग सकता है।</span>
-                <span class="en">All project scopes and timelines are agreed upon before commencement. Any additional changes outside the original scope may be subject to extra charges.</span>
-            </p>
-        </div>
-        <div>
-            <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800">
-                <span class="hi">इंटेलेक्चुअल प्रॉपर्टी</span><span class="en">Intellectual Property</span>
-            </h3>
-            <p>
-                <span class="hi">प्रोजेक्ट पूरा होने और पूरी पेमेंट मिलने के बाद, आपके प्रोजेक्ट (वेबसाइट/ऐप) का पूरा मालिकाना हक आपको सौंप दिया जाता है।</span>
-                <span class="en">Upon full payment and project completion, complete ownership and intellectual property rights of the delivered product are transferred to you.</span>
-            </p>
-        </div>
-    </div>
-</div>
-
-<div id="page-faq" class="hidden pt-32 pb-24 min-h-[70vh] px-4 max-w-4xl mx-auto">
-    <a href="#" onclick="showPage('home'); return false;" class="inline-flex mb-8 items-center gap-2 text-brand-600 hover:text-brand-700 font-bold transition">
-        <i class="ph ph-arrow-left"></i> <span class="hi">वापस जाएं</span><span class="en">Back to Home</span>
-    </a>
-    <h1 class="text-4xl font-bold text-gray-900 mb-6">
-        <span class="hi">अक्सर पूछे जाने वाले सवाल (FAQ)</span><span class="en">Frequently Asked Questions (FAQ)</span>
-    </h1>
-    <div class="space-y-8 text-gray-600 mt-10">
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            <h3 class="text-xl font-bold text-gray-900">
-                <span class="hi">हम अपने प्रोजेक्ट की शुरुआत कैसे करें?</span>
-                <span class="en">How do we start a project?</span>
-            </h3>
-            <p class="mt-3 text-lg">
-                <span class="hi">बस होम पेज पर दिए गए कांटेक्ट फॉर्म को भरें। हमारी टीम आपकी रिक्वायरमेंट्स को समझेगी और 24 घंटे के अंदर आपसे संपर्क करेगी।</span>
-                <span class="en">Simply fill out the contact form with your requirements. Our team will review it and get back to you with a custom strategy within 24 hours.</span>
-            </p>
-        </div>
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            <h3 class="text-xl font-bold text-gray-900">
-                <span class="hi">क्या आप काम पूरा होने के बाद भी सपोर्ट देते हैं?</span>
-                <span class="en">Do you offer ongoing support?</span>
-            </h3>
-            <p class="mt-3 text-lg">
-                <span class="hi">हाँ, बिल्कुल! हमारे एडवांस्ड और कस्टम प्लान्स में हम आपको प्रोजेक्ट डिलीवर करने के बाद भी पूरी मेंटेनेंस और सपोर्ट देते हैं।</span>
-                <span class="en">Yes! All our advanced and custom plans include ongoing maintenance and support to ensure your product runs smoothly long after launch.</span>
-            </p>
-        </div>
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-            <h3 class="text-xl font-bold text-gray-900">
-                <span class="hi">आप कौन सी टेक्नोलॉजी यूज़ करते हैं?</span>
-                <span class="en">What technologies do you use?</span>
-            </h3>
-            <p class="mt-3 text-lg">
-                <span class="hi">हम बेस्ट क्वालिटी देने के लिए मॉडर्न फ्रेमवर्क्स (React, Node) और लेटेस्ट AI टेक्नोलॉजी (Gemini) का यूज़ करते हैं।</span>
-                <span class="en">We leverage cutting-edge AI models, modern web frameworks (React, Tailwind, Node), and robust cloud infrastructure to deliver top-tier solutions.</span>
-            </p>
-        </div>
-    </div>
-</div>
-
-<!-- Footer -->
-<footer class="bg-gray-900 border-t border-gray-800 text-gray-400 py-12 text-center">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <a href="#" onclick="showPage('home'); window.scrollTo(0,0); return false;" class="inline-flex items-center justify-center gap-2 mb-4 hover:opacity-80 transition cursor-pointer">
-            <i class="ph ph-cpu text-brand-500 text-2xl"></i>
-            <span class="font-bold text-xl tracking-tight text-white">UZT<span class="text-brand-500">DevHouse</span></span>
-        </a>
-        <p class="mb-6">
-            <span class="hi">AI के साथ आपके बिज़नेस को आगे बढ़ाते हैं।</span>
-            <span class="en">Helping businesses grow with AI.</span>
-        </p>
-        <div class="flex justify-center space-x-6 text-sm mb-8">
-            <a href="#" onclick="showPage('page-privacy'); return false;" class="hover:text-white transition"><span class="hi">प्राइवेसी पॉलिसी</span><span class="en">Privacy Policy</span></a>
-            <a href="#" onclick="showPage('page-terms'); return false;" class="hover:text-white transition"><span class="hi">टर्म्स ऑफ़ सर्विस</span><span class="en">Terms of Service</span></a>
-            <a href="#" onclick="showPage('page-faq'); return false;" class="hover:text-white transition">FAQ</a>
-        </div>
-        <p class="text-sm text-gray-600">&copy; 2026 UZTDevHouse. All rights reserved.</p>
-    </div>
-</footer>
-
-<!-- Floating AI Chat Widget -->
-<div id="chat-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-    
-    <!-- Chat Window (Hidden by default) -->
-    <div id="chat-window" class="hidden w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 mb-4 overflow-hidden flex-col h-[450px] transition-all duration-300 transform origin-bottom-right">
-        <!-- Header -->
-        <div class="bg-brand-600 p-4 text-white flex justify-between items-center shadow-md z-10">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                    <i class="ph-fill ph-robot text-xl"></i>
-                </div>
-                <div>
-                    <h4 class="font-bold text-sm">UZTDevHouse AI</h4>
-                    <p class="text-xs text-brand-200">
-                        <span class="hi">ऑनलाइन (मदद के लिए तैयार)</span>
-                        <span class="en">Online & Ready to help</span>
+        <!-- Services Section -->
+        <section id="services" class="py-24 bg-white dark:bg-slate-950 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-brand-600 font-semibold tracking-wide uppercase text-sm mb-2">
+                        <span class="hi">हम क्या करते हैं</span><span class="en">What We Do</span>
+                    </h2>
+                    <p
+                        class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                        <span class="hi">बिज़नेस Growth के लिए स्मार्ट IT सॉल्यूशंस</span>
+                        <span class="en">Smart IT Solutions for Growth</span>
+                    </p>
+                    <p class="mt-4 max-w-2xl text-lg text-gray-500 dark:text-gray-400 mx-auto">
+                        <span class="hi">हम नई टेक्नोलॉजी से आपका काम तेज़ और बढ़िया करते हैं।</span>
+                        <span class="en">We use the latest technology to do your work faster and better.</span>
                     </p>
                 </div>
-            </div>
-            <button id="close-chat" class="text-white hover:text-brand-200 transition focus:outline-none">
-                <i class="ph ph-x text-xl"></i>
-            </button>
-        </div>
-        
-        <!-- Chat Messages Area -->
-        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50 flex flex-col gap-3">
-            <!-- Initial AI Welcome Message -->
-            <div class="flex items-end gap-2 max-w-[85%] self-start">
-                <div class="w-6 h-6 rounded-full bg-brand-100 flex-shrink-0 flex items-center justify-center text-brand-600">
-                    <i class="ph-fill ph-robot text-xs"></i>
-                </div>
-                <div class="bg-white p-3 rounded-2xl rounded-bl-none shadow-sm border border-gray-100 text-sm text-gray-700">
-                    <span class="hi">नमस्ते! मैं UZTDevHouse AI हूँ। मैं आपके बिज़नेस को ग्रो करने में कैसे मदद कर सकता हूँ?</span>
-                    <span class="en">Hi! I'm the UZTDevHouse AI. How can I help you grow your business today?</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- Input Area -->
-        <div class="p-3 bg-white border-t border-gray-100">
-            <form id="chat-form" class="flex items-center gap-2">
-                <input type="text" id="chat-input" class="flex-1 bg-gray-100 text-sm px-4 py-2.5 rounded-full border border-transparent focus:border-brand-500 focus:bg-white outline-none transition" data-ph-hi="कुछ भी पूछें..." data-ph-en="Ask me anything..." placeholder="Ask me anything..." required>
-                <button type="submit" class="w-10 h-10 rounded-full bg-brand-600 text-white flex items-center justify-center hover:bg-brand-700 transition flex-shrink-0 shadow-md">
-                    <i class="ph-fill ph-paper-plane-right"></i>
-                </button>
-            </form>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Service Card 1 -->
+                    <div
+                        class="bg-gray-50 dark:bg-slate-900/40 rounded-2xl p-8 hover:shadow-xl dark:hover:shadow-slate-950/40 transition-shadow duration-300 border border-gray-100 dark:border-slate-800/80 group">
+                        <div
+                            class="w-14 h-14 bg-brand-100 dark:bg-brand-950/50 rounded-xl flex items-center justify-center text-brand-600 dark:text-brand-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i class="ph ph-robot text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                            <span class="hi">AI और ऑटोमेशन</span><span class="en">AI & Automation</span>
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+                            <span class="hi">अपने रोज़ के काम को आटोमेटिक बनाएं और टाइम बचाएं।</span>
+                            <span class="en">Automate your daily tasks and save time with smart AI.</span>
+                        </p>
+                    </div>
+
+                    <!-- Service Card 2 -->
+                    <div
+                        class="bg-gray-50 dark:bg-slate-900/40 rounded-2xl p-8 hover:shadow-xl dark:hover:shadow-slate-950/40 transition-shadow duration-300 border border-gray-100 dark:border-slate-800/80 group">
+                        <div
+                            class="w-14 h-14 bg-accent-100 dark:bg-accent-950/50 rounded-xl flex items-center justify-center text-accent-600 dark:text-accent-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i class="ph ph-devices text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                            <span class="hi">शानदार वेबसाइट</span><span class="en">Smart Websites</span>
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+                            <span class="hi">आपके बिज़नेस के लिए एकदम बढ़िया और तेज़ वेबसाइट बनवाएं।</span>
+                            <span class="en">Get a fast and beautiful website designed for your business.</span>
+                        </p>
+                    </div>
+
+                    <!-- Service Card 3 -->
+                    <div
+                        class="bg-gray-50 dark:bg-slate-900/40 rounded-2xl p-8 hover:shadow-xl dark:hover:shadow-slate-950/40 transition-shadow duration-300 border border-gray-100 dark:border-slate-800/80 group">
+                        <div
+                            class="w-14 h-14 bg-blue-100 dark:bg-blue-950/50 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i class="ph ph-trend-up text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                            <span class="hi">डिजिटल मार्केटिंग</span><span class="en">Digital Marketing</span>
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+                            <span class="hi">ऑनलाइन एड्स और मार्केटिंग से ज़्यादा से ज़्यादा कस्टमर लाएं।</span>
+                            <span class="en">Get more customers with smart online ads and marketing.</span>
+                        </p>
+                    </div>
+
+                    <!-- Service Card 4 -->
+                    <div
+                        class="bg-gray-50 dark:bg-slate-900/40 rounded-2xl p-8 hover:shadow-xl dark:hover:shadow-slate-950/40 transition-shadow duration-300 border border-gray-100 dark:border-slate-800/80 group">
+                        <div
+                            class="w-14 h-14 bg-orange-100 dark:bg-orange-950/40 rounded-xl flex items-center justify-center text-orange-600 dark:text-orange-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i class="ph ph-chart-line-up text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                            <span class="hi">बिज़नेस डेटा</span><span class="en">Business Analytics</span>
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+                            <span class="hi">अपने बिज़नेस के डेटा को समझें और सही फैसले लें।</span>
+                            <span class="en">Understand your data to make better business decisions.</span>
+                        </p>
+                    </div>
+
+                    <!-- Service Card 5 -->
+                    <div
+                        class="bg-gray-50 dark:bg-slate-900/40 rounded-2xl p-8 hover:shadow-xl dark:hover:shadow-slate-950/40 transition-shadow duration-300 border border-gray-100 dark:border-slate-800/80 group">
+                        <div
+                            class="w-14 h-14 bg-sky-100 dark:bg-sky-950/40 rounded-xl flex items-center justify-center text-sky-600 dark:text-sky-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i class="ph ph-device-mobile text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                            <span class="hi">ऐप डेवलपमेंट</span><span class="en">App Development</span>
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+                            <span class="hi">आपके बिज़नेस के लिए शानदार मोबाइल ऐप्स (iOS और Android)।</span>
+                            <span class="en">High-performance mobile apps for iOS and Android tailored to your
+                                business.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live AI Demo Section (Instant Growth Strategy) -->
+        <section id="ai-demo" class="py-24 bg-gray-900 relative overflow-hidden">
+            <!-- Background glows -->
+            <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-brand-500/10 blur-[120px] rounded-full pointer-events-none">
+            </div>
+
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-10">
+                    <span
+                        class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-gray-800 text-brand-400 text-sm font-semibold mb-6 border border-gray-700 shadow-inner">
+                        <i class="ph-fill ph-magic-wand text-brand-500 text-lg"></i>
+                        <span class="hi">हमारा AI इंजन आज़माएं</span><span class="en">Try Our AI Engine</span>
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6">
+                        <span class="hi">इंस्टेंट ग्रोथ स्ट्रेटेजी</span><span class="en">Instant Growth Strategy</span>
+                    </h2>
+                    <p class="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+                        <span class="hi">अपने बिज़नेस के बारे में बताएं, और हमारा AI तुरंत आपके लिए 3-स्टेप का कस्टम
+                            ग्रोथ प्लान बनाएगा।</span>
+                        <span class="en">Tell us about your business, and our Gemini-powered engine will instantly
+                            generate a custom 3-step digital transformation plan structured just for you.</span>
+                    </p>
+                </div>
+
+                <!-- Input Form -->
+                <form id="strategy-form" class="max-w-3xl mx-auto relative mb-16">
+                    <div
+                        class="flex flex-col sm:flex-row gap-3 bg-gray-800/80 backdrop-blur-md p-2.5 rounded-2xl border border-gray-700 shadow-2xl focus-within:border-brand-500 focus-within:ring-1 focus-within:ring-brand-500 transition-all">
+                        <div class="flex items-center pl-4 text-gray-400">
+                            <i class="ph ph-magnifying-glass text-xl"></i>
+                        </div>
+                        <input type="text" id="strategy-input"
+                            class="flex-1 bg-transparent text-white px-3 py-3 outline-none placeholder-gray-500 text-lg"
+                            data-ph-hi="जैसे: मेरी कपड़ों की दुकान है..."
+                            data-ph-en="E.g., I run a local clothing store..."
+                            placeholder="E.g., I run a local clothing store..." required>
+                        <button type="submit" id="strategy-btn"
+                            class="bg-brand-600 hover:bg-brand-500 text-white font-bold py-3.5 px-8 rounded-xl transition duration-300 flex items-center justify-center gap-2 whitespace-nowrap shadow-lg shadow-brand-500/20">
+                            <span class="hi" id="stratBtnHi">स्ट्रेटेजी बनाएं</span><span class="en"
+                                id="stratBtnEn">Generate Strategy</span>
+                            <i class="ph ph-arrow-right font-bold"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Results Area -->
+                <div id="strategy-results" class="hidden transition-all duration-500 ease-in-out">
+                    <h3 class="text-center text-xl font-bold text-gray-300 mb-8 uppercase tracking-widest text-sm">
+                        <span class="hi">आपका कस्टम AI ब्लूप्रिंट</span><span class="en">Your Custom AI Blueprint</span>
+                    </h3>
+                    <div id="blueprint-cards" class="grid md:grid-cols-3 gap-6">
+                        <!-- Cards will be injected here via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Value-Driven Partnership Options -->
+        <section id="pricing"
+            class="py-24 bg-white dark:bg-slate-950 relative border-t border-gray-100 dark:border-slate-800/50 overflow-hidden">
+            <!-- Background decorative blob -->
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[400px] bg-brand-50 dark:bg-brand-950/20 rounded-full blur-3xl opacity-50 -z-10">
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-brand-600 font-semibold tracking-wide uppercase text-sm mb-2">
+                        <span class="hi">आसान प्लान्स</span><span class="en">Simple Plans</span>
+                    </h2>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
+                        <span class="hi">अपने बिज़नेस के हिसाब से सही प्लान चुनें</span>
+                        <span class="en">Pick the best plan for your business</span>
+                    </h2>
+                    <p class="text-gray-500 dark:text-gray-400 text-lg">
+                        <span class="hi">हम AI का यूज़ करते हैं इसलिए हमारे रेट्स एकदम सही हैं। कोई छुपा चार्ज
+                            नहीं!</span>
+                        <span class="en">We use AI to save costs and give you the best price. No hidden fees!</span>
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto items-stretch">
+                    <!-- Option 1: Essential (Budget Friendly) -->
+                    <div
+                        class="bg-white dark:bg-slate-900/40 rounded-3xl p-10 border border-gray-200 dark:border-slate-800 shadow-xl shadow-gray-200/40 dark:shadow-slate-950/50 hover:-translate-y-2 transition-all duration-300 flex flex-col relative overflow-hidden group">
+                        <!-- Large decorative background icon -->
+                        <div
+                            class="absolute -top-4 -right-4 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-300 rotate-12">
+                            <i class="ph-fill ph-plant text-[10rem] text-brand-600 dark:text-brand-400"></i>
+                        </div>
+
+                        <div
+                            class="w-14 h-14 bg-brand-50 dark:bg-brand-950/50 rounded-2xl flex items-center justify-center text-brand-600 dark:text-brand-400 border border-brand-100 dark:border-brand-900/50 mb-6 shadow-sm relative z-10">
+                            <i class="ph ph-leaf text-2xl"></i>
+                        </div>
+
+                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 relative z-10">
+                            <span class="hi">बेसिक प्लान</span><span class="en">Basic Plan</span>
+                        </h3>
+                        <p
+                            class="text-brand-600 dark:text-brand-400 font-bold text-xs mb-4 uppercase tracking-wider relative z-10">
+                            <span class="hi">बजट-फ्रेंडली</span><span class="en">Budget-Friendly Base</span>
+                        </p>
+
+                        <div class="mb-2 relative z-10 flex items-baseline">
+                            <span class="line-through text-gray-400 text-2xl mr-2">₹2,999</span>
+                            <span class="text-4xl font-extrabold text-gray-900 dark:text-white">₹2,000</span>
+                            <span class="text-gray-500 font-medium ml-2">onwards</span>
+                        </div>
+
+                        <div class="mb-6 relative z-10">
+                            <span
+                                class="bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 text-xs font-bold px-2.5 py-1 rounded-md border border-red-200 dark:border-red-900/30 inline-block">Few
+                                days left (Seasonal Offer)</span>
+                        </div>
+
+                        <p
+                            class="text-gray-700 dark:text-gray-300 mb-10 flex-grow text-lg leading-relaxed relative z-10">
+                            <span class="hi">छोटे बिज़नेस और नए स्टार्टअप्स के लिए सबसे बेस्ट। कम बजट में अच्छी सर्विस
+                                पाएं।</span>
+                            <span class="en">Perfect for small businesses and startups. Get great service on a low
+                                budget.</span>
+                        </p>
+
+                        <a href="#contact"
+                            class="block w-full text-center bg-gray-900 dark:bg-slate-800 hover:bg-gray-800 dark:hover:bg-slate-700 text-white font-bold py-4 px-6 rounded-xl transition duration-300 mt-auto relative z-10 shadow-md">
+                            <span class="hi">शुरू करें</span><span class="en">Start Now</span>
+                        </a>
+                    </div>
+
+                    <!-- Option 2: Advanced -->
+                    <div
+                        class="bg-gray-900 rounded-3xl p-10 border border-gray-800 shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col relative overflow-hidden group">
+                        <!-- Glow effect -->
+                        <div
+                            class="absolute -top-24 -right-24 w-64 h-64 bg-brand-600 rounded-full blur-[80px] opacity-30 group-hover:opacity-50 transition-opacity duration-500">
+                        </div>
+
+                        <!-- Large decorative background icon -->
+                        <div
+                            class="absolute -top-4 -right-4 p-8 opacity-[0.03] group-hover:opacity-10 transition-opacity duration-300 rotate-12">
+                            <i class="ph-fill ph-rocket text-[10rem] text-white"></i>
+                        </div>
+
+                        <div class="absolute top-8 right-8 z-20">
+                            <span
+                                class="bg-accent-500 text-gray-900 border border-accent-400 text-xs font-bold uppercase tracking-wider py-1.5 px-4 rounded-full backdrop-blur-sm">
+                                Recommended
+                            </span>
+                        </div>
+
+                        <div
+                            class="w-14 h-14 bg-brand-600 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-brand-500/30 relative z-10">
+                            <i class="ph ph-rocket-launch text-2xl"></i>
+                        </div>
+
+                        <h3 class="text-3xl font-bold text-white mb-2 relative z-10">
+                            <span class="hi">एडवांस्ड प्लान</span><span class="en">Advanced Plan</span>
+                        </h3>
+                        <p class="text-accent-400 font-bold text-xs mb-4 uppercase tracking-wider relative z-10">
+                            <span class="hi">पूरी सर्विस</span><span class="en">Full Service</span>
+                        </p>
+
+                        <div class="mb-2 relative z-10 flex items-baseline">
+                            <span class="line-through text-gray-500 text-2xl mr-2">₹8,999</span>
+                            <span class="text-4xl font-extrabold text-white">₹4,449</span>
+                            <span class="text-gray-400 font-medium ml-2">onwards</span>
+                        </div>
+
+                        <div class="mb-6 relative z-10">
+                            <span
+                                class="bg-red-500/20 text-red-300 text-xs font-bold px-2.5 py-1 rounded-md border border-red-500/30 inline-block">Few
+                                days left (Seasonal Offer)</span>
+                        </div>
+
+                        <p class="text-gray-300 mb-10 flex-grow text-lg leading-relaxed relative z-10">
+                            <span class="hi">बड़े बिज़नेस के लिए पूरी डिजिटल सर्विस। हम आपके काम को तेज़ी से बढ़ाने में मदद
+                                करेंगे।</span>
+                            <span class="en">Full digital service for growing businesses. We help you scale fast with
+                                advanced solutions.</span>
+                        </p>
+
+                        <a href="#contact"
+                            class="block w-full text-center bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 px-6 rounded-xl transition duration-300 mt-auto relative z-10 shadow-lg shadow-brand-500/25">
+                            <span class="hi">बिज़नेस बढ़ाएं</span><span class="en">Scale Now</span>
+                        </a>
+                    </div>
+
+                    <!-- Option 3: Custom -->
+                    <div
+                        class="bg-white dark:bg-slate-900/40 rounded-3xl p-10 border border-gray-200 dark:border-slate-800 shadow-xl shadow-gray-200/40 dark:shadow-slate-950/50 hover:-translate-y-2 transition-all duration-300 flex flex-col relative overflow-hidden group">
+                        <!-- Large decorative background icon -->
+                        <div
+                            class="absolute -top-4 -right-4 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-300 rotate-12">
+                            <i class="ph-fill ph-buildings text-[10rem] text-brand-600 dark:text-brand-400"></i>
+                        </div>
+
+                        <div
+                            class="w-14 h-14 bg-brand-50 dark:bg-brand-950/50 rounded-2xl flex items-center justify-center text-brand-600 dark:text-brand-400 border border-brand-100 dark:border-brand-900/50 mb-6 shadow-sm relative z-10">
+                            <i class="ph ph-handshake text-2xl"></i>
+                        </div>
+
+                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 relative z-10">
+                            <span class="hi">कस्टम प्लान</span><span class="en">Custom Plan</span>
+                        </h3>
+                        <p
+                            class="text-brand-600 dark:text-brand-400 font-bold text-xs mb-4 uppercase tracking-wider relative z-10">
+                            <span class="hi">एंटरप्राइज सॉल्यूशंस</span><span class="en">Enterprise Solutions</span>
+                        </p>
+
+                        <div class="mb-6 relative z-10 flex items-baseline h-[60px] items-center">
+                            <span class="text-3xl font-extrabold text-gray-900 dark:text-white"><span class="hi">आइए बात
+                                    करें</span><span class="en">Let's Discuss</span></span>
+                        </div>
+
+                        <p
+                            class="text-gray-700 dark:text-gray-300 mb-10 flex-grow text-lg leading-relaxed relative z-10">
+                            <span class="hi">बड़े प्रोजेक्ट्स और कस्टम रिक्वायरमेंट्स के लिए हम आपके साथ मिलकर एक खास
+                                स्ट्रेटेजी और प्लान बनाएंगे।</span>
+                            <span class="en">For large projects and custom requirements. We will build a tailored
+                                strategy and execution plan just for you.</span>
+                        </p>
+
+                        <a href="#contact"
+                            class="block w-full text-center bg-gray-900 dark:bg-slate-800 hover:bg-gray-800 dark:hover:bg-slate-700 text-white font-bold py-4 px-6 rounded-xl transition duration-300 mt-auto relative z-10 shadow-md">
+                            <span class="hi">संपर्क करें</span><span class="en">Contact Us</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us / About Section -->
+        <section id="about" class="py-24 bg-gray-900 text-white overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+                    <div>
+                        <h2 class="text-brand-400 font-bold tracking-wide uppercase text-sm mb-2">
+                            <span class="hi">हमें क्यों चुनें?</span><span class="en">Why Choose Us?</span>
+                        </h2>
+                        <h3 class="text-3xl font-extrabold tracking-tight sm:text-4xl mb-6">
+                            <span class="hi">स्मार्ट टेक्नोलॉजी के साथ तेज़ी से बढ़ें</span>
+                            <span class="en">Grow faster with smart technology</span>
+                        </h3>
+                        <p class="text-lg text-gray-400 mb-8 leading-relaxed">
+                            <span class="hi">आज के समय में सिर्फ कड़ी मेहनत काफी नहीं है, स्मार्ट वर्क ज़रूरी है। हम AI की
+                                मदद से आपके बिज़नेस को आगे बढ़ाते हैं।</span>
+                            <span class="en">Hard work is not enough today, smart work is needed. We help you with
+                                AI.</span>
+                        </p>
+
+                        <div class="space-y-8">
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-900/40 flex items-center justify-center text-brand-400 mt-1 border border-brand-800/50">
+                                    <i class="ph ph-users text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-1">
+                                        <span class="hi">बेस्ट टीम</span><span class="en">Best Team</span>
+                                    </h4>
+                                    <p class="text-gray-400">
+                                        <span class="hi">हमारे पास लेटेस्ट AI टेक्नोलॉजी की बेस्ट टीम है।</span>
+                                        <span class="en">We have the best team for the latest tech.</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-900/40 flex items-center justify-center text-brand-400 mt-1 border border-brand-800/50">
+                                    <i class="ph ph-lightning text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-1">
+                                        <span class="hi">तेज़ काम</span><span class="en">Fast Work</span>
+                                    </h4>
+                                    <p class="text-gray-400">
+                                        <span class="hi">हम AI की मदद से आपका काम बहुत तेज़ी से करते हैं।</span>
+                                        <span class="en">We use AI to do your work much faster.</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="flex-shrink-0 w-12 h-12 rounded-full bg-brand-900/40 flex items-center justify-center text-brand-400 mt-1 border border-brand-800/50">
+                                    <i class="ph ph-wallet text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold mb-1">
+                                        <span class="hi">सही दाम</span><span class="en">Fair Pricing</span>
+                                    </h4>
+                                    <p class="text-gray-400">
+                                        <span class="hi">हमारे रेट्स एकदम साफ़ हैं, कोई भी छुपा चार्ज नहीं लगेगा।</span>
+                                        <span class="en">Clear prices, no hidden charges ever.</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-16 lg:mt-0 relative">
+                        <!-- Decorative glow (Enhanced to match image) -->
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-brand-500/30 blur-[100px] rounded-full pointer-events-none z-0">
+                        </div>
+
+                        <!-- Abstract visual code editor / dashboard -->
+                        <div
+                            class="relative z-10 rounded-2xl bg-slate-800 border border-slate-700 shadow-2xl p-6 aspect-[4/3] flex flex-col justify-between backdrop-blur-sm">
+                            <div class="flex justify-between items-center border-b border-slate-700/80 pb-4">
+                                <div class="flex gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                </div>
+                                <div class="text-gray-500 text-sm font-mono">analytics.js</div>
+                            </div>
+
+                            <div class="flex-1 mt-6 flex flex-col gap-4">
+                                <!-- Top input/bar skeleton -->
+                                <div class="h-8 bg-slate-700 rounded-md w-1/3"></div>
+
+                                <!-- Middle dual blocks -->
+                                <div class="flex-1 flex gap-4">
+                                    <div class="flex-1 bg-slate-700 rounded-md"></div>
+                                    <div class="flex-[2] bg-slate-700 rounded-md"></div>
+                                </div>
+
+                                <!-- Bottom trend block -->
+                                <div
+                                    class="h-24 bg-brand-900/40 border border-brand-800/50 rounded-md flex items-center justify-center text-brand-400">
+                                    <i class="ph ph-trend-up text-3xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact / CTA Section -->
+        <section id="contact" class="py-24 bg-brand-50 dark:bg-slate-950 relative">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-3xl shadow-xl dark:shadow-slate-950/50 border border-transparent dark:border-slate-800/80 overflow-hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2">
+                        <!-- Contact Info -->
+                        <div
+                            class="bg-brand-600 p-10 text-white flex flex-col justify-between relative overflow-hidden">
+                            <div class="relative z-10">
+                                <h3 class="text-3xl font-bold mb-4">
+                                    <span class="hi">क्या आप शुरू करने के लिए तैयार हैं?</span>
+                                    <span class="en">Ready to get started?</span>
+                                </h3>
+                                <p class="text-brand-100 mb-8">
+                                    <span class="hi">आज ही हमें मैसेज करें और अपने बिज़नेस को नई ऊंचाइयों पर ले
+                                        जाएं।</span>
+                                    <span class="en">Message us today and take your business to new heights.</span>
+                                </p>
+
+                                <div class="space-y-6">
+                                    <div class="flex items-center gap-4">
+                                        <i class="ph ph-envelope-simple text-2xl text-brand-300"></i>
+                                        <span>uztdevhouse.business@gmail.com</span>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <i class="ph ph-phone text-2xl text-brand-300"></i>
+                                        <span>+91 8452859543</span>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <i class="ph ph-map-pin text-2xl text-brand-300"></i>
+                                        <span>Mumbai, Maharashtra</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Form -->
+                        <div class="p-10">
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                                <span class="hi">हमें मैसेज भेजें</span><span class="en">Send us a message</span>
+                            </h3>
+                            <form id="contactForm" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        <span class="hi">पूरा नाम</span><span class="en">Full Name</span>
+                                    </label>
+                                    <input type="text" name="name"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition"
+                                        data-ph-hi="आपका नाम" data-ph-en="John Doe" placeholder="John Doe" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        <span class="hi">ईमेल आईडी</span><span class="en">Email Address</span>
+                                    </label>
+                                    <input type="email" name="email"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition"
+                                        data-ph-hi="hello@email.com" data-ph-en="john@company.com"
+                                        placeholder="john@company.com" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        <span class="hi">क्या सर्विस चाहिए?</span><span class="en">Service Needed</span>
+                                    </label>
+                                    <select name="service"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition bg-white dark:bg-slate-800 dark:text-white">
+                                        <option class="dark:bg-slate-800">AI & Automation</option>
+                                        <option class="dark:bg-slate-800">Smart Websites</option>
+                                        <option class="dark:bg-slate-800">App Development</option>
+                                        <option class="dark:bg-slate-800">Digital Marketing</option>
+                                        <option class="dark:bg-slate-800">Other</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        <span class="hi">प्रोजेक्ट की डिटेल्स</span><span class="en">Project
+                                            Details</span>
+                                    </label>
+                                    <textarea name="message" rows="4"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition resize-none"
+                                        data-ph-hi="अपने प्रोजेक्ट के बारे में बताएं..."
+                                        data-ph-en="Tell us about your goals..."
+                                        placeholder="Tell us about your goals..." required></textarea>
+                                </div>
+                                <button type="submit"
+                                    class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-md shadow-brand-500/20">
+                                    <span class="hi" id="btnHi">मैसेज भेजें</span><span class="en" id="btnEn">Send
+                                        Message</span>
+                                </button>
+                            </form>
+
+                            <!-- Success Message Placeholder -->
+                            <div id="formSuccess"
+                                class="hidden mt-4 p-4 bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-400 rounded-lg border border-green-200 dark:border-green-900/30 flex items-center gap-2">
+                                <i class="ph ph-check-circle text-xl"></i>
+                                <span class="hi">मैसेज भेज दिया गया है! हम जल्दी ही रिप्लाई करेंगे।</span>
+                                <span class="en">Message sent successfully! We will reply soon.</span>
+                            </div>
+
+                            <!-- Error Message Placeholder -->
+                            <div id="formError"
+                                class="hidden mt-4 p-4 bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 rounded-lg border border-red-200 dark:border-red-900/30 flex items-center gap-2">
+                                <i class="ph ph-warning-circle text-xl"></i>
+                                <span class="hi">कुछ गलत हो गया। कृपया दोबारा कोशिश करें।</span>
+                                <span class="en">Something went wrong. Please try again.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div> <!-- End Main View Wrapper -->
+
+    <!-- Footer Pages Containers -->
+    <div id="page-privacy" class="hidden pt-32 pb-24 min-h-[70vh] px-4 max-w-4xl mx-auto">
+        <a href="#" onclick="showPage('home'); return false;"
+            class="inline-flex mb-8 items-center gap-2 text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-bold transition">
+            <i class="ph ph-arrow-left"></i> <span class="hi">वापस जाएं</span><span class="en">Back to Home</span>
+        </a>
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
+            <span class="hi">प्राइवेसी पॉलिसी</span><span class="en">Privacy Policy</span>
+        </h1>
+        <div class="prose max-w-none text-gray-600 dark:text-gray-300 space-y-6 text-lg">
+            <p>
+                <span class="hi">UZTDevHouse की प्राइवेसी पॉलिसी में आपका स्वागत है। आपकी प्राइवेसी हमारे लिए बहुत
+                    महत्वपूर्ण है। यह पेज बताता है कि जब आप हमारी सर्विसेज का उपयोग करते हैं तो हम आपकी जानकारी कैसे
+                    इकट्ठा और इस्तेमाल करते हैं।</span>
+                <span class="en">Welcome to UZTDevHouse's Privacy Policy. Your privacy is critically important to us.
+                    This page outlines the types of personal information that is received and collected by our agency
+                    and how it is used to protect you.</span>
+            </p>
+            <div>
+                <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800 dark:text-white">
+                    <span class="hi">हम क्या जानकारी लेते हैं</span><span class="en">Information We Collect</span>
+                </h3>
+                <p>
+                    <span class="hi">हम केवल वही जानकारी लेते हैं जो हमें आपको बेहतरीन सर्विस देने के लिए चाहिए होती है
+                        (जैसे आपका नाम, ईमेल और प्रोजेक्ट डिटेल्स)। हम आपका डेटा कभी भी किसी दूसरी कंपनी को नहीं
+                        बेचते।</span>
+                    <span class="en">We only collect information about you if we have a reason to do so—for example, to
+                        provide our services, to communicate with you, or to make our services better. We never sell
+                        your data to third parties.</span>
+                </p>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800 dark:text-white">
+                    <span class="hi">जानकारी का इस्तेमाल</span><span class="en">How We Use Information</span>
+                </h3>
+                <p>
+                    <span class="hi">हम आपकी जानकारी का इस्तेमाल आपके प्रोजेक्ट को पूरा करने, आपसे बात करने, और आपको
+                        सपोर्ट देने के लिए करते हैं। आपकी जानकारी हमारे सुरक्षित सर्वर पर रखी जाती है।</span>
+                    <span class="en">We use the information we collect to provide our services, facilitate
+                        communication, process transactions, and improve our platform offerings safely and
+                        securely.</span>
+                </p>
+            </div>
         </div>
     </div>
 
-    <!-- Toggle Button -->
-    <button id="chat-toggle" class="w-14 h-14 bg-brand-600 hover:bg-brand-700 text-white rounded-full shadow-lg shadow-brand-500/40 flex items-center justify-center transition-transform hover:scale-105 focus:outline-none">
-        <i class="ph-fill ph-chat-circle-dots text-3xl"></i>
-    </button>
-</div>
+    <div id="page-terms" class="hidden pt-32 pb-24 min-h-[70vh] px-4 max-w-4xl mx-auto">
+        <a href="#" onclick="showPage('home'); return false;"
+            class="inline-flex mb-8 items-center gap-2 text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-bold transition">
+            <i class="ph ph-arrow-left"></i> <span class="hi">वापस जाएं</span><span class="en">Back to Home</span>
+        </a>
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
+            <span class="hi">टर्म्स ऑफ़ सर्विस</span><span class="en">Terms of Service</span>
+        </h1>
+        <div class="prose max-w-none text-gray-600 dark:text-gray-300 space-y-6 text-lg">
+            <p>
+                <span class="hi">UZTDevHouse की सेवाओं का उपयोग करके, आप इन नियमों और शर्तों से सहमत होते हैं। कृपया
+                    हमारे साथ काम शुरू करने से पहले इन्हें ध्यान से पढ़ें।</span>
+                <span class="en">By accessing or using our services at UZTDevHouse, you agree to be bound by these
+                    terms. If you disagree with any part of the terms, then you may not access the service.</span>
+            </p>
+            <div>
+                <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800 dark:text-white">
+                    <span class="hi">प्रोजेक्ट और पेमेंट</span><span class="en">Projects & Payments</span>
+                </h3>
+                <p>
+                    <span class="hi">हम काम शुरू करने से पहले प्रोजेक्ट की पूरी डिटेल और टाइमलाइन तय करते हैं। काम के
+                        दौरान कोई भी अतिरिक्त बदलाव के लिए अलग से चार्ज लग सकता है।</span>
+                    <span class="en">All project scopes and timelines are agreed upon before commencement. Any
+                        additional changes outside the original scope may be subject to extra charges.</span>
+                </p>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold mt-8 mb-3 text-gray-800 dark:text-white">
+                    <span class="hi">इंटेलेक्चुअल प्रॉपर्टी</span><span class="en">Intellectual Property</span>
+                </h3>
+                <p>
+                    <span class="hi">प्रोजेक्ट पूरा होने और पूरी पेमेंट मिलने के बाद, आपके प्रोजेक्ट (वेबसाइट/ऐप) का
+                        पूरा मालिकाना हक आपको सौंप दिया जाता है।</span>
+                    <span class="en">Upon full payment and project completion, complete ownership and intellectual
+                        property rights of the delivered product are transferred to you.</span>
+                </p>
+            </div>
+        </div>
+    </div>
 
-<script>
-    // --- Language Toggle Logic ---
-    let currentLang = 'en'; // Changed default to English
-    const body = document.body;
-    
-    function toggleLang() {
-        if (currentLang === 'hi') {
-            // Switch to English
-            body.classList.remove('lang-hi');
-            body.classList.add('lang-en');
-            currentLang = 'en';
-            document.getElementById('langTextDesktop').innerText = 'हिंदी में पढ़ें';
-        } else {
-            // Switch to Hindi
-            body.classList.remove('lang-en');
-            body.classList.add('lang-hi');
-            currentLang = 'hi';
-            document.getElementById('langTextDesktop').innerText = 'Switch to English';
-        }
-        
-        // Update input placeholders
-        document.querySelectorAll('input[data-ph-en], textarea[data-ph-en]').forEach(el => {
-            el.placeholder = el.getAttribute(`data-ph-${currentLang}`);
-        });
-    }
+    <div id="page-faq" class="hidden pt-32 pb-24 min-h-[70vh] px-4 max-w-4xl mx-auto">
+        <a href="#" onclick="showPage('home'); return false;"
+            class="inline-flex mb-8 items-center gap-2 text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-bold transition">
+            <i class="ph ph-arrow-left"></i> <span class="hi">वापस जाएं</span><span class="en">Back to Home</span>
+        </a>
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">
+            <span class="hi">अक्सर पूछे जाने वाले सवाल (FAQ)</span><span class="en">Frequently Asked Questions
+                (FAQ)</span>
+        </h1>
+        <div class="space-y-8 text-gray-600 dark:text-gray-300 mt-10">
+            <div
+                class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm dark:shadow-slate-950/20">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+                    <span class="hi">हम अपने प्रोजेक्ट की शुरुआत कैसे करें?</span>
+                    <span class="en">How do we start a project?</span>
+                </h3>
+                <p class="mt-3 text-lg text-gray-600 dark:text-gray-300">
+                    <span class="hi">बस होम पेज पर दिए गए कांटेक्ट फॉर्म को भरें। हमारी टीम आपकी रिक्वायरमेंट्स को
+                        समझेगी और 24 घंटे के अंदर आपसे संपर्क करेगी।</span>
+                    <span class="en">Simply fill out the contact form with your requirements. Our team will review it
+                        and get back to you with a custom strategy within 24 hours.</span>
+                </p>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm dark:shadow-slate-950/20">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+                    <span class="hi">क्या आप काम पूरा होने के बाद भी सपोर्ट देते हैं?</span>
+                    <span class="en">Do you offer ongoing support?</span>
+                </h3>
+                <p class="mt-3 text-lg text-gray-600 dark:text-gray-300">
+                    <span class="hi">हाँ, बिल्कुल! हमारे एडवांस्ड और कस्टम प्लान्स में हम आपको प्रोजेक्ट डिलीवर करने के
+                        बाद भी पूरी मेंटेनेंस और सपोर्ट देते हैं।</span>
+                    <span class="en">Yes! All our advanced and custom plans include ongoing maintenance and support to
+                        ensure your product runs smoothly long after launch.</span>
+                </p>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm dark:shadow-slate-950/20">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+                    <span class="hi">आप कौन सी टेक्नोलॉजी यूज़ करते हैं?</span>
+                    <span class="en">What technologies do you use?</span>
+                </h3>
+                <p class="mt-3 text-lg text-gray-600 dark:text-gray-300">
+                    <span class="hi">हम बेस्ट क्वालिटी देने के लिए मॉडर्न फ्रेमवर्क्स (React, Node) और लेटेस्ट AI
+                        टेक्नोलॉजी (Gemini) का यूज़ करते हैं।</span>
+                    <span class="en">We leverage cutting-edge AI models, modern web frameworks (React, Tailwind, Node),
+                        and robust cloud infrastructure to deliver top-tier solutions.</span>
+                </p>
+            </div>
+        </div>
+    </div>
 
-    // Mobile Menu Toggle
-    const btn = document.getElementById('mobile-menu-btn');
-    const menu = document.getElementById('mobile-menu');
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 text-gray-400 py-12 text-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <a href="#" onclick="showPage('home'); window.scrollTo(0,0); return false;"
+                class="inline-flex items-center justify-center gap-2 mb-4 hover:opacity-80 transition cursor-pointer">
+                <i class="ph ph-cpu text-brand-500 text-2xl"></i>
+                <span class="font-bold text-xl tracking-tight text-white">UZT<span
+                        class="text-brand-500">DevHouse</span></span>
+            </a>
+            <p class="mb-6">
+                <span class="hi">AI के साथ आपके बिज़नेस को आगे बढ़ाते हैं।</span>
+                <span class="en">Helping businesses grow with AI.</span>
+            </p>
+            <div class="flex justify-center space-x-6 text-sm mb-8">
+                <a href="#" onclick="showPage('page-privacy'); return false;" class="hover:text-white transition"><span
+                        class="hi">प्राइवेसी पॉलिसी</span><span class="en">Privacy Policy</span></a>
+                <a href="#" onclick="showPage('page-terms'); return false;" class="hover:text-white transition"><span
+                        class="hi">टर्म्स ऑफ़ सर्विस</span><span class="en">Terms of Service</span></a>
+                <a href="#" onclick="showPage('page-faq'); return false;" class="hover:text-white transition">FAQ</a>
+            </div>
+            <p class="text-sm text-gray-600">&copy; 2026 UZTDevHouse. All rights reserved.</p>
+        </div>
+    </footer>
 
-    btn.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-    });
+    <!-- Floating AI Chat Widget -->
+    <div id="chat-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
 
-    // Close mobile menu when a link is clicked
-    document.querySelectorAll('#mobile-menu a').forEach(link => {
-        link.addEventListener('click', () => {
-            menu.classList.add('hidden');
-        });
-    });
+        <!-- Chat Window (Hidden by default) -->
+        <div id="chat-window"
+            class="hidden w-80 sm:w-96 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 mb-4 overflow-hidden flex-col h-[450px] transition-all duration-300 transform origin-bottom-right">
+            <!-- Header -->
+            <div class="bg-brand-600 p-4 text-white flex justify-between items-center shadow-md z-10">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                        <i class="ph-fill ph-robot text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm">UZTDevHouse AI</h4>
+                        <p class="text-xs text-brand-200">
+                            <span class="hi">ऑनलाइन (मदद के लिए तैयार)</span>
+                            <span class="en">Online & Ready to help</span>
+                        </p>
+                    </div>
+                </div>
+                <button id="close-chat" class="text-white hover:text-brand-200 transition focus:outline-none">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+            </div>
 
-    // Navbar Scroll Effect
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 20) {
-            navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-sm');
-            navbar.classList.remove('bg-transparent');
-        } else {
-            navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-sm');
-            navbar.classList.add('bg-transparent');
-        }
-    });
+            <!-- Chat Messages Area -->
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50 dark:bg-slate-950 flex flex-col gap-3">
+                <!-- Initial AI Welcome Message -->
+                <div class="flex items-end gap-2 max-w-[85%] self-start">
+                    <div
+                        class="w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-950/50 flex-shrink-0 flex items-center justify-center text-brand-600 dark:text-brand-400">
+                        <i class="ph-fill ph-robot text-xs"></i>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-900 p-3 rounded-2xl rounded-bl-none shadow-sm border border-gray-100 dark:border-slate-800 text-sm text-gray-700 dark:text-gray-200">
+                        <span class="hi">नमस्ते! मैं UZTDevHouse AI हूँ। मैं आपके बिज़नेस को ग्रो करने में कैसे मदद कर
+                            सकता हूँ?</span>
+                        <span class="en">Hi! I'm the UZTDevHouse AI. How can I help you grow your business today?</span>
+                    </div>
+                </div>
+            </div>
 
-    // Form Submission Logic (Web3Forms API)
-    const form = document.getElementById('contactForm');
-    const successMsg = document.getElementById('formSuccess');
-    const errorMsg = document.getElementById('formError');
+            <!-- Input Area -->
+            <div class="p-3 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800">
+                <form id="chat-form" class="flex items-center gap-2">
+                    <input type="text" id="chat-input"
+                        class="flex-1 bg-gray-100 dark:bg-slate-800 text-sm px-4 py-2.5 rounded-full border border-transparent dark:text-white dark:placeholder-gray-400 focus:border-brand-500 focus:bg-white dark:focus:bg-slate-700 outline-none transition"
+                        data-ph-hi="कुछ भी पूछें..." data-ph-en="Ask me anything..." placeholder="Ask me anything..."
+                        required>
+                    <button type="submit"
+                        class="w-10 h-10 rounded-full bg-brand-600 text-white flex items-center justify-center hover:bg-brand-700 transition flex-shrink-0 shadow-md">
+                        <i class="ph-fill ph-paper-plane-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Prevent page reload
-        
-        const submitBtnHi = document.getElementById('btnHi');
-        const submitBtnEn = document.getElementById('btnEn');
-        const submitBtn = form.querySelector('button[type="submit"]');
-        
-        const origHi = submitBtnHi.innerText;
-        const origEn = submitBtnEn.innerText;
-        
-        submitBtnHi.innerText = 'भेजा जा रहा है...';
-        submitBtnEn.innerText = 'Sending...';
-        
-        submitBtn.disabled = true;
-        submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+        <!-- Toggle Button -->
+        <button id="chat-toggle"
+            class="w-14 h-14 bg-brand-600 hover:bg-brand-700 text-white rounded-full shadow-lg shadow-brand-500/40 flex items-center justify-center transition-transform hover:scale-105 focus:outline-none">
+            <i class="ph-fill ph-chat-circle-dots text-3xl"></i>
+        </button>
+    </div>
 
-        try {
-            // Construct form data and append Web3Forms access key
-            const formData = new FormData(form);
-            formData.append("access_key", "f591e6e5-a610-4a3d-9636-689365ba04ee");
+    <script>
+        // --- Language Toggle Logic ---
+        let currentLang = 'en'; // Changed default to English
+        const body = document.body;
 
-            const response = await fetch("https://api.web3forms.com/submit", {
-                method: "POST",
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                form.reset();
-                
-                // Show success message
-                successMsg.classList.remove('hidden');
-                errorMsg.classList.add('hidden');
-                
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    successMsg.classList.add('hidden');
-                }, 5000);
+        function toggleLang() {
+            if (currentLang === 'hi') {
+                // Switch to English
+                body.classList.remove('lang-hi');
+                body.classList.add('lang-en');
+                currentLang = 'en';
+                document.getElementById('langTextDesktop').innerText = 'हिंदी में पढ़ें';
             } else {
-                console.error("Web3Forms error:", data);
-                throw new Error("Form submission failed");
+                // Switch to Hindi
+                body.classList.remove('lang-en');
+                body.classList.add('lang-hi');
+                currentLang = 'hi';
+                document.getElementById('langTextDesktop').innerText = 'Switch to English';
             }
-        } catch (error) {
-            console.error(error);
-            // Show error message
-            errorMsg.classList.remove('hidden');
-            successMsg.classList.add('hidden');
-            
-            // Hide error message after 5 seconds
-            setTimeout(() => {
-                errorMsg.classList.add('hidden');
-            }, 5000);
-        } finally {
-            // Restore button state
-            submitBtnHi.innerText = origHi;
-            submitBtnEn.innerText = origEn;
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+
+            // Update input placeholders
+            document.querySelectorAll('input[data-ph-en], textarea[data-ph-en]').forEach(el => {
+                el.placeholder = el.getAttribute(`data-ph-${currentLang}`);
+            });
         }
-    });
 
-    // --- AI Chatbot Logic ---
-    const chatToggleBtn = document.getElementById('chat-toggle');
-    const closeChatBtn = document.getElementById('chat-window');
-    const closeBtn = document.getElementById('close-chat');
-    const chatForm = document.getElementById('chat-form');
-    const chatInput = document.getElementById('chat-input');
-    const chatMessages = document.getElementById('chat-messages');
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
 
-    // Toggle Chat Window
-    const toggleChat = () => {
-        const chatWindowObj = document.getElementById('chat-window');
-        chatWindowObj.classList.toggle('hidden');
-        chatWindowObj.classList.toggle('flex');
-        if (!chatWindowObj.classList.contains('hidden')) {
-            chatInput.focus();
-        }
-    };
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
 
-    chatToggleBtn.addEventListener('click', toggleChat);
-    closeBtn.addEventListener('click', toggleChat);
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
 
-    // Helper: Add message to UI
-    const appendMessage = (text, isUser = false) => {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `flex items-end gap-2 max-w-[85%] ${isUser ? 'self-end flex-row-reverse' : 'self-start'}`;
-        
-        const avatarHtml = isUser 
-            ? `<div class="w-6 h-6 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center text-gray-500"><i class="ph-fill ph-user text-xs"></i></div>`
-            : `<div class="w-6 h-6 rounded-full bg-brand-100 flex-shrink-0 flex items-center justify-center text-brand-600"><i class="ph-fill ph-robot text-xs"></i></div>`;
-            
-        const bubbleStyles = isUser
-            ? `bg-brand-600 text-white p-3 rounded-2xl rounded-br-none shadow-sm`
-            : `bg-white p-3 rounded-2xl rounded-bl-none shadow-sm border border-gray-100 text-gray-700`;
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('bg-white/90', 'dark:bg-slate-950/90', 'backdrop-blur-md', 'shadow-sm', 'dark:shadow-slate-950/50', 'border-b', 'border-transparent', 'dark:border-slate-800/80');
+                navbar.classList.remove('bg-transparent');
+            } else {
+                navbar.classList.remove('bg-white/90', 'dark:bg-slate-950/90', 'backdrop-blur-md', 'shadow-sm', 'dark:shadow-slate-950/50', 'border-b', 'border-transparent', 'dark:border-slate-800/80');
+                navbar.classList.add('bg-transparent');
+            }
+        });
 
-        const formattedText = text.replace(/\n/g, '<br>');
+        // Form Submission Logic (Web3Forms API)
+        const form = document.getElementById('contactForm');
+        const successMsg = document.getElementById('formSuccess');
+        const errorMsg = document.getElementById('formError');
 
-        msgDiv.innerHTML = `
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent page reload
+
+            const submitBtnHi = document.getElementById('btnHi');
+            const submitBtnEn = document.getElementById('btnEn');
+            const submitBtn = form.querySelector('button[type="submit"]');
+
+            const origHi = submitBtnHi.innerText;
+            const origEn = submitBtnEn.innerText;
+
+            submitBtnHi.innerText = 'भेजा जा रहा है...';
+            submitBtnEn.innerText = 'Sending...';
+
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            try {
+                // Construct form data and append Web3Forms access key
+                const formData = new FormData(form);
+                formData.append("access_key", "f591e6e5-a610-4a3d-9636-689365ba04ee");
+
+                const response = await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    form.reset();
+
+                    // Show success message
+                    successMsg.classList.remove('hidden');
+                    errorMsg.classList.add('hidden');
+
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        successMsg.classList.add('hidden');
+                    }, 5000);
+                } else {
+                    console.error("Web3Forms error:", data);
+                    throw new Error("Form submission failed");
+                }
+            } catch (error) {
+                console.error(error);
+                // Show error message
+                errorMsg.classList.remove('hidden');
+                successMsg.classList.add('hidden');
+
+                // Hide error message after 5 seconds
+                setTimeout(() => {
+                    errorMsg.classList.add('hidden');
+                }, 5000);
+            } finally {
+                // Restore button state
+                submitBtnHi.innerText = origHi;
+                submitBtnEn.innerText = origEn;
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+            }
+        });
+
+        // --- AI Chatbot Logic ---
+        const chatToggleBtn = document.getElementById('chat-toggle');
+        const closeChatBtn = document.getElementById('chat-window');
+        const closeBtn = document.getElementById('close-chat');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // Toggle Chat Window
+        const toggleChat = () => {
+            const chatWindowObj = document.getElementById('chat-window');
+            chatWindowObj.classList.toggle('hidden');
+            chatWindowObj.classList.toggle('flex');
+            if (!chatWindowObj.classList.contains('hidden')) {
+                chatInput.focus();
+            }
+        };
+
+        chatToggleBtn.addEventListener('click', toggleChat);
+        closeBtn.addEventListener('click', toggleChat);
+
+        // Helper: Add message to UI
+        const appendMessage = (text, isUser = false) => {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `flex items-end gap-2 max-w-[85%] ${isUser ? 'self-end flex-row-reverse' : 'self-start'}`;
+
+            const avatarHtml = isUser
+                ? `<div class="w-6 h-6 rounded-full bg-gray-200 dark:bg-slate-800 flex-shrink-0 flex items-center justify-center text-gray-500 dark:text-gray-400"><i class="ph-fill ph-user text-xs"></i></div>`
+                : `<div class="w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-950/50 flex-shrink-0 flex items-center justify-center text-brand-600 dark:text-brand-400"><i class="ph-fill ph-robot text-xs"></i></div>`;
+
+            const bubbleStyles = isUser
+                ? `bg-brand-600 text-white p-3 rounded-2xl rounded-br-none shadow-sm`
+                : `bg-white dark:bg-slate-900 p-3 rounded-2xl rounded-bl-none shadow-sm border border-gray-100 dark:border-slate-800 text-gray-700 dark:text-gray-200`;
+
+            const formattedText = text.replace(/\n/g, '<br>');
+
+            msgDiv.innerHTML = `
             ${avatarHtml}
             <div class="${bubbleStyles} text-sm">${formattedText}</div>
         `;
-        
-        chatMessages.appendChild(msgDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll to bottom
-    };
 
-    // Helper: Show/Hide Typing Indicator
-    const createTypingIndicator = () => {
-        const typingDiv = document.createElement('div');
-        typingDiv.id = 'typing-indicator';
-        typingDiv.className = `flex items-end gap-2 max-w-[85%] self-start mt-1`;
-        typingDiv.innerHTML = `
-            <div class="w-6 h-6 rounded-full bg-brand-100 flex-shrink-0 flex items-center justify-center text-brand-600">
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll to bottom
+        };
+
+        // Helper: Show/Hide Typing Indicator
+        const createTypingIndicator = () => {
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = `flex items-end gap-2 max-w-[85%] self-start mt-1`;
+            typingDiv.innerHTML = `
+            <div class="w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-950/50 flex-shrink-0 flex items-center justify-center text-brand-600 dark:text-brand-400">
                 <i class="ph-fill ph-robot text-xs"></i>
             </div>
-            <div class="bg-white px-4 py-3 rounded-2xl rounded-bl-none shadow-sm border border-gray-100 flex gap-1 items-center h-10">
-                <div class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot"></div>
-                <div class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot"></div>
-                <div class="w-1.5 h-1.5 bg-gray-400 rounded-full typing-dot"></div>
+            <div class="bg-white dark:bg-slate-900 px-4 py-3 rounded-2xl rounded-bl-none shadow-sm border border-gray-100 dark:border-slate-800 flex gap-1 items-center h-10">
+                <div class="w-1.5 h-1.5 bg-gray-400 dark:bg-slate-600 rounded-full typing-dot"></div>
+                <div class="w-1.5 h-1.5 bg-gray-400 dark:bg-slate-600 rounded-full typing-dot"></div>
+                <div class="w-1.5 h-1.5 bg-gray-400 dark:bg-slate-600 rounded-full typing-dot"></div>
             </div>
         `;
-        return typingDiv;
-    };
+            return typingDiv;
+        };
 
-    let chatHistory = [];
+        let chatHistory = [];
 
-    // Handle form submit (Sending message)
-    chatForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const userText = chatInput.value.trim();
-        if (!userText) return;
+        // Handle form submit (Sending message)
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userText = chatInput.value.trim();
+            if (!userText) return;
 
-        appendMessage(userText, true);
-        chatInput.value = '';
-        
-        chatHistory.push({ role: "user", parts: [{ text: userText }] });
+            appendMessage(userText, true);
+            chatInput.value = '';
 
-        const typingIndicator = createTypingIndicator();
-        chatMessages.appendChild(typingIndicator);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+            chatHistory.push({ role: "user", parts: [{ text: userText }] });
 
-        try {
-            const apiKey = ""; // Handled dynamically in Canvas
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-            
-            const systemPrompt = "You are the UZTDevHouse AI Assistant. You answer questions in the user's preferred language (Hindi, Hinglish, or simple English). Keep answers short (1-3 sentences). Encourage them to use the 'Contact' form. Services: AI & Automation, Smart Web Dev, App Development, Digital Marketing. We offer budget-friendly services with 3 tiers including a Custom Enterprise Plan.";
+            const typingIndicator = createTypingIndicator();
+            chatMessages.appendChild(typingIndicator);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            const payload = {
-                contents: chatHistory,
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
+            try {
+                const apiKey = ""; // Handled dynamically in Canvas
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+                const systemPrompt = "You are the UZTDevHouse AI Assistant. You answer questions in the user's preferred language (Hindi, Hinglish, or simple English). Keep answers short (1-3 sentences). Encourage them to use the 'Contact' form. Services: AI & Automation, Smart Web Dev, App Development, Digital Marketing. We offer budget-friendly services with 3 tiers including a Custom Enterprise Plan.";
+
+                const payload = {
+                    contents: chatHistory,
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const result = await response.json();
+
+                typingIndicator.remove();
+
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content?.parts?.length > 0) {
+                    const aiText = result.candidates[0].content.parts[0].text;
+                    appendMessage(aiText, false);
+                    chatHistory.push({ role: "model", parts: [{ text: aiText }] });
+                } else {
+                    throw new Error("Invalid API response structure");
                 }
-            };
 
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                typingIndicator.remove();
+                const errorMsg = currentLang === 'hi'
+                    ? "अभी सर्वर बिजी है। कृपया ऊपर दिए गए फॉर्म से हमसे बात करें!"
+                    : "I'm currently experiencing high network traffic. Please use the contact form above!";
+                appendMessage(errorMsg, false);
+            }
+        });
 
-            if (!response.ok) throw new Error('Network response was not ok');
-            
-            const result = await response.json();
-            
-            typingIndicator.remove();
+        // --- Typewriter Animation Logic ---
+        const typewriterText = document.getElementById('typewriter-text');
+        const phrases = [
+            "Want to grow your business?",
+            "क्या आपको अपना बिज़नेस Grow 📈 करना है??"
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
 
-            if (result.candidates && result.candidates.length > 0 && result.candidates[0].content?.parts?.length > 0) {
-                const aiText = result.candidates[0].content.parts[0].text;
-                appendMessage(aiText, false);
-                chatHistory.push({ role: "model", parts: [{ text: aiText }] });
+        function typeEffect() {
+            const currentPhrase = phrases[phraseIndex];
+
+            if (isDeleting) {
+                typewriterText.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
             } else {
-                throw new Error("Invalid API response structure");
+                typewriterText.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
             }
 
-        } catch (error) {
-            console.error("Gemini API Error:", error);
-            typingIndicator.remove();
-            const errorMsg = currentLang === 'hi' 
-                ? "अभी सर्वर बिजी है। कृपया ऊपर दिए गए फॉर्म से हमसे बात करें!" 
-                : "I'm currently experiencing high network traffic. Please use the contact form above!";
-            appendMessage(errorMsg, false);
-        }
-    });
+            let typeSpeed = isDeleting ? 40 : 80;
 
-    // --- Typewriter Animation Logic ---
-    const typewriterText = document.getElementById('typewriter-text');
-    const phrases = [
-        "Want to grow your business?",
-        "क्या आपको अपना बिज़नेस Grow 📈 करना है??"
-    ];
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typeSpeed = 2500; // Pause at end of phrase
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500; // Pause before typing next phrase
+            }
 
-    function typeEffect() {
-        const currentPhrase = phrases[phraseIndex];
-        
-        if (isDeleting) {
-            typewriterText.textContent = currentPhrase.substring(0, charIndex - 1);
-            charIndex--;
-        } else {
-            typewriterText.textContent = currentPhrase.substring(0, charIndex + 1);
-            charIndex++;
+            setTimeout(typeEffect, typeSpeed);
         }
 
-        let typeSpeed = isDeleting ? 40 : 80;
+        // Start typewriter effect after a short delay
+        setTimeout(typeEffect, 1000);
 
-        if (!isDeleting && charIndex === currentPhrase.length) {
-            typeSpeed = 2500; // Pause at end of phrase
-            isDeleting = true;
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            phraseIndex = (phraseIndex + 1) % phrases.length;
-            typeSpeed = 500; // Pause before typing next phrase
-        }
+        // --- Live AI Demo Strategy Generator Logic ---
+        const strategyForm = document.getElementById('strategy-form');
+        const strategyInput = document.getElementById('strategy-input');
+        const strategyBtnHi = document.getElementById('stratBtnHi');
+        const strategyBtnEn = document.getElementById('stratBtnEn');
+        const strategyBtn = document.getElementById('strategy-btn');
+        const strategyResults = document.getElementById('strategy-results');
+        const blueprintCards = document.getElementById('blueprint-cards');
 
-        setTimeout(typeEffect, typeSpeed);
-    }
+        strategyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const businessDesc = strategyInput.value.trim();
+            if (!businessDesc) return;
 
-    // Start typewriter effect after a short delay
-    setTimeout(typeEffect, 1000);
+            // Set Loading UI
+            const origHi = strategyBtnHi.innerText;
+            const origEn = strategyBtnEn.innerText;
+            strategyBtnHi.innerText = 'बना रहा है...';
+            strategyBtnEn.innerText = 'Generating...';
+            strategyBtn.disabled = true;
+            strategyBtn.classList.add('opacity-75', 'cursor-not-allowed');
 
-    // --- Live AI Demo Strategy Generator Logic ---
-    const strategyForm = document.getElementById('strategy-form');
-    const strategyInput = document.getElementById('strategy-input');
-    const strategyBtnHi = document.getElementById('stratBtnHi');
-    const strategyBtnEn = document.getElementById('stratBtnEn');
-    const strategyBtn = document.getElementById('strategy-btn');
-    const strategyResults = document.getElementById('strategy-results');
-    const blueprintCards = document.getElementById('blueprint-cards');
+            // Hide previous results and clear them
+            strategyResults.classList.add('hidden');
+            blueprintCards.innerHTML = '';
 
-    strategyForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const businessDesc = strategyInput.value.trim();
-        if(!businessDesc) return;
+            try {
+                const apiKey = ""; // Handled dynamically in Canvas
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
-        // Set Loading UI
-        const origHi = strategyBtnHi.innerText;
-        const origEn = strategyBtnEn.innerText;
-        strategyBtnHi.innerText = 'बना रहा है...';
-        strategyBtnEn.innerText = 'Generating...';
-        strategyBtn.disabled = true;
-        strategyBtn.classList.add('opacity-75', 'cursor-not-allowed');
-        
-        // Hide previous results and clear them
-        strategyResults.classList.add('hidden');
-        blueprintCards.innerHTML = '';
+                // Determine language for the prompt
+                const targetLang = currentLang === 'hi' ? 'Hindi (or simple Hinglish in Devanagari script)' : 'English';
 
-        try {
-            const apiKey = ""; // Handled dynamically in Canvas
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-
-            // Determine language for the prompt
-            const targetLang = currentLang === 'hi' ? 'Hindi (or simple Hinglish in Devanagari script)' : 'English';
-            
-            // Strict JSON prompt
-            const systemPrompt = `You are an expert AI business strategist. The user will provide a business description or goal. 
+                // Strict JSON prompt
+                const systemPrompt = `You are an expert AI business strategist. The user will provide a business description or goal. 
             Create a custom 3-step digital transformation and AI integration strategy for them.
             Language: You MUST respond in ${targetLang}.
             Format: You MUST return ONLY a raw JSON array of exactly 3 objects. NO markdown blocks (do not use \`\`\`json). NO extra text.
             Schema: [{"title": "Step Title", "desc": "Short description (max 15 words)", "icon": "phosphor-icon-name"}]
             Use valid Phosphor icon names WITHOUT the "ph-" prefix (e.g., robot, lightning, trend-up, chart-bar, users, funnel, target, lightbulb, rocket).`;
 
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: businessDesc }] }],
-                systemInstruction: { parts: [{ text: systemPrompt }] },
-                generationConfig: { temperature: 0.7 }
-            };
+                const payload = {
+                    contents: [{ role: "user", parts: [{ text: businessDesc }] }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] },
+                    generationConfig: { temperature: 0.7 }
+                };
 
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-            if (!response.ok) throw new Error('API Error');
-            const result = await response.json();
-            
-            let responseText = result.candidates[0].content.parts[0].text;
-            
-            // Clean up markdown just in case the AI ignores instructions
-            responseText = responseText.replace(/```json/gi, '').replace(/```/g, '').trim();
-            
-            const strategyData = JSON.parse(responseText);
+                if (!response.ok) throw new Error('API Error');
+                const result = await response.json();
 
-            // Build the HTML cards
-            strategyData.forEach((step, index) => {
-                const card = document.createElement('div');
-                card.className = "bg-gray-800 rounded-2xl p-6 border border-gray-700 shadow-xl relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300";
-                
-                // Accent colors matching the screenshot vibe (Blue, Purple, Emerald)
-                const accentColors = ['bg-blue-500', 'bg-brand-500', 'bg-accent-500'];
-                const accentColor = accentColors[index % 3];
-                const textColors = ['text-blue-500', 'text-brand-500', 'text-accent-500'];
-                const textColor = textColors[index % 3];
+                let responseText = result.candidates[0].content.parts[0].text;
 
-                card.innerHTML = `
+                // Clean up markdown just in case the AI ignores instructions
+                responseText = responseText.replace(/```json/gi, '').replace(/```/g, '').trim();
+
+                const strategyData = JSON.parse(responseText);
+
+                // Build the HTML cards
+                strategyData.forEach((step, index) => {
+                    const card = document.createElement('div');
+                    card.className = "bg-gray-800 rounded-2xl p-6 border border-gray-700 shadow-xl relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300";
+
+                    // Accent colors matching the screenshot vibe (Blue, Purple, Emerald)
+                    const accentColors = ['bg-blue-500', 'bg-brand-500', 'bg-accent-500'];
+                    const accentColor = accentColors[index % 3];
+                    const textColors = ['text-blue-500', 'text-brand-500', 'text-accent-500'];
+                    const textColor = textColors[index % 3];
+
+                    card.innerHTML = `
                     <div class="absolute top-0 left-0 w-full h-1 ${accentColor}"></div>
                     <div class="w-12 h-12 rounded-xl bg-gray-700/50 flex items-center justify-center ${textColor} mb-6 group-hover:scale-110 transition-transform duration-300 border border-gray-600">
                         <i class="ph-fill ph-${step.icon || 'star'} text-2xl"></i>
@@ -1230,44 +1480,56 @@
                     <h4 class="text-xl font-bold text-white mb-3 leading-tight">${step.title}</h4>
                     <p class="text-gray-400 text-sm leading-relaxed">${step.desc}</p>
                 `;
-                blueprintCards.appendChild(card);
-            });
+                    blueprintCards.appendChild(card);
+                });
 
-            // Reveal Results
-            strategyResults.classList.remove('hidden');
+                // Reveal Results
+                strategyResults.classList.remove('hidden');
 
-        } catch (error) {
-            console.error("Strategy Gen Error:", error);
-            const errorText = currentLang === 'hi' ? "क्षमा करें, स्ट्रेटेजी बनाने में समस्या आ रही है। कृपया दोबारा कोशिश करें।" : "Sorry, there was an error generating the strategy. Please try again.";
-            blueprintCards.innerHTML = `<div class="col-span-1 md:col-span-3 text-center text-red-400 bg-red-900/20 p-4 rounded-xl border border-red-900/50">${errorText}</div>`;
-            strategyResults.classList.remove('hidden');
-        } finally {
-            // Restore UI
-            strategyBtnHi.innerText = origHi;
-            strategyBtnEn.innerText = origEn;
-            strategyBtn.disabled = false;
-            strategyBtn.classList.remove('opacity-75', 'cursor-not-allowed');
-        }
-    });
-
-    // --- Page Navigation Logic ---
-    function showPage(pageId) {
-        const pages = ['main-view', 'page-privacy', 'page-terms', 'page-faq'];
-        
-        pages.forEach(id => {
-            const el = document.getElementById(id);
-            if(el) {
-                if (id === pageId || (pageId === 'home' && id === 'main-view')) {
-                    el.classList.remove('hidden');
-                } else {
-                    el.classList.add('hidden');
-                }
+            } catch (error) {
+                console.error("Strategy Gen Error:", error);
+                const errorText = currentLang === 'hi' ? "क्षमा करें, स्ट्रेटेजी बनाने में समस्या आ रही है। कृपया दोबारा कोशिश करें।" : "Sorry, there was an error generating the strategy. Please try again.";
+                blueprintCards.innerHTML = `<div class="col-span-1 md:col-span-3 text-center text-red-400 bg-red-900/20 p-4 rounded-xl border border-red-900/50">${errorText}</div>`;
+                strategyResults.classList.remove('hidden');
+            } finally {
+                // Restore UI
+                strategyBtnHi.innerText = origHi;
+                strategyBtnEn.innerText = origEn;
+                strategyBtn.disabled = false;
+                strategyBtn.classList.remove('opacity-75', 'cursor-not-allowed');
             }
         });
-        window.scrollTo(0,0);
-    }
 
-</script>
+        // --- Theme Toggle Logic ---
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        }
+
+        // --- Page Navigation Logic ---
+        function showPage(pageId) {
+            const pages = ['main-view', 'page-privacy', 'page-terms', 'page-faq'];
+
+            pages.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (id === pageId || (pageId === 'home' && id === 'main-view')) {
+                        el.classList.remove('hidden');
+                    } else {
+                        el.classList.add('hidden');
+                    }
+                }
+            });
+            window.scrollTo(0, 0);
+        }
+
+    </script>
 
 </body>
+
 </html>
