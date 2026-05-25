@@ -11,7 +11,7 @@
 
     <!-- Theme Toggle Initialization Script (avoids FOUC) -->
     <script>
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem('color-theme') === 'dark') {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
@@ -62,6 +62,41 @@
     <style>
         html.dark {
             color-scheme: dark;
+        }
+
+        /* Premium Dark Mode Enhancements */
+        html.dark body {
+            background-color: #020617 !important;
+            background-image:
+                radial-gradient(circle at top left, rgba(30, 27, 75, 0.5) 0%, transparent 40%),
+                radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.8) 0%, transparent 50%) !important;
+            background-attachment: fixed !important;
+        }
+
+        html.dark .dark\:bg-slate-950 {
+            background-color: transparent !important;
+        }
+
+        html.dark .dark\:bg-slate-900\/40,
+        html.dark .dark\:bg-slate-900,
+        html.dark .dark\:bg-slate-800 {
+            background: rgba(15, 23, 42, 0.4) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+        }
+
+        html.dark .dark\:bg-slate-950\/90 {
+            background: rgba(2, 6, 23, 0.65) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+
+        html.dark .dark\:border-slate-800\/80,
+        html.dark .dark\:border-slate-800 {
+            border-color: rgba(255, 255, 255, 0.08) !important;
         }
 
         /* Smooth theme transitions for background and borders */
