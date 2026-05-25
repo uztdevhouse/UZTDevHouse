@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth overflow-x-hidden">
 
 <head>
     <meta charset="UTF-8">
@@ -202,14 +202,14 @@
     </style>
 </head>
 
-<body class="bg-gray-50 dark:bg-slate-950 text-gray-800 dark:text-gray-100 antialiased lang-en">
+<body class="bg-gray-50 dark:bg-slate-950 text-gray-800 dark:text-gray-100 antialiased lang-en overflow-x-hidden">
     <!-- Default is English -->
 
     <!-- Fixed Header Wrapper -->
     <div class="fixed w-full z-50 flex flex-col top-0 left-0">
         <!-- Announcement Bar -->
         <div
-            class="bg-gradient-to-r from-brand-600 to-accent-600 text-white text-center py-2 px-4 text-sm font-medium shadow-md flex justify-center items-center flex-wrap gap-x-2 gap-y-1">
+            class="bg-gradient-to-r from-brand-600 to-accent-600 text-white text-center py-1.5 sm:py-2 px-2 sm:px-4 text-xs sm:text-sm font-medium shadow-md flex justify-center items-center flex-wrap gap-x-2 gap-y-1">
             <span class="animate-bounce">🎉</span>
             <span class="hi">हमारा "लॉन्च स्पेशल" ऑफर लाइव है! पहले कुछ कस्टमर्स के लिए खास डिस्काउंट।</span>
             <span class="en">Our "Launch Special" is live! Exclusive discounts for our first few customers.</span>
@@ -224,9 +224,10 @@
                 <div class="flex justify-between items-center h-20">
                     <!-- Logo -->
                     <a href="#" onclick="showPage('home'); window.scrollTo(0,0); return false;"
-                        class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
-                        <i class="ph ph-cpu text-brand-600 text-3xl"></i>
-                        <span class="font-bold text-2xl tracking-tight text-gray-900 dark:text-white">UZT<span
+                        class="flex-shrink-0 flex items-center gap-1 sm:gap-2 cursor-pointer">
+                        <i class="ph ph-cpu text-brand-600 text-2xl sm:text-3xl"></i>
+                        <span
+                            class="font-bold text-lg sm:text-2xl tracking-tight text-gray-900 dark:text-white">UZT<span
                                 class="text-brand-600">DevHouse</span></span>
                     </a>
 
@@ -273,21 +274,21 @@
                     </div>
 
                     <!-- Mobile menu button -->
-                    <div class="md:hidden flex items-center gap-4">
+                    <div class="md:hidden flex items-center gap-1 sm:gap-2 flex-shrink-0">
                         <button onclick="toggleLang()"
-                            class="flex items-center justify-center bg-brand-100 dark:bg-brand-950/50 text-brand-700 dark:text-brand-400 w-10 h-10 rounded-full">
-                            <i class="ph ph-translate text-xl"></i>
+                            class="flex-shrink-0 flex items-center justify-center bg-brand-100 dark:bg-brand-950/50 text-brand-700 dark:text-brand-400 w-8 h-8 sm:w-10 sm:h-10 rounded-full">
+                            <i class="ph ph-translate text-lg sm:text-xl"></i>
                         </button>
                         <!-- Theme Toggle Mobile -->
                         <button onclick="toggleTheme()"
-                            class="flex items-center justify-center bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-200 w-10 h-10 rounded-full"
+                            class="flex-shrink-0 flex items-center justify-center bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-200 w-8 h-8 sm:w-10 sm:h-10 rounded-full"
                             id="theme-toggle-mobile" aria-label="Toggle dark mode">
-                            <i class="ph ph-sun text-xl dark:hidden"></i>
-                            <i class="ph ph-moon text-xl hidden dark:block"></i>
+                            <i class="ph ph-sun text-lg sm:text-xl dark:hidden"></i>
+                            <i class="ph ph-moon text-lg sm:text-xl hidden dark:block"></i>
                         </button>
                         <button id="mobile-menu-btn"
-                            class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus:outline-none p-2">
-                            <i class="ph ph-list text-3xl"></i>
+                            class="flex-shrink-0 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus:outline-none p-1 sm:p-2">
+                            <i class="ph ph-list text-2xl sm:text-3xl"></i>
                         </button>
                     </div>
                 </div>
@@ -326,7 +327,7 @@
     <div id="main-view">
 
         <!-- Hero Section -->
-        <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <section id="home" class="relative pt-48 pb-20 md:pt-56 lg:pt-64 lg:pb-32 overflow-hidden">
             <!-- Cinematic Background Decoration -->
             <div class="absolute inset-0 -z-10 overflow-hidden">
                 <div class="w-full h-full animate-cinematic">
@@ -353,8 +354,8 @@
 
                 <!-- Typewriter Headline -->
                 <h1
-                    class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight animate-fade-up delay-100 min-h-[100px] md:min-h-[120px] flex items-center justify-center max-w-4xl mx-auto">
-                    <span>
+                    class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight animate-fade-up delay-100 min-h-[120px] md:min-h-[120px] flex items-center justify-center max-w-4xl mx-auto">
+                    <span class="break-words px-2 w-full">
                         <span id="typewriter-text" class="text-brand-600 drop-shadow-sm"></span><span
                             class="text-brand-600 animate-pulse font-light">|</span>
                     </span>
@@ -532,10 +533,11 @@
                             <span class="hi">बजट-फ्रेंडली</span><span class="en">Budget-Friendly Base</span>
                         </p>
 
-                        <div class="mb-2 relative z-10 flex items-baseline">
-                            <span class="line-through text-gray-400 text-2xl mr-2">₹2,999</span>
-                            <span class="text-4xl font-extrabold text-gray-900 dark:text-white">₹2,000</span>
-                            <span class="text-gray-500 font-medium ml-2">onwards</span>
+                        <div class="mb-2 relative z-10 flex items-baseline flex-wrap">
+                            <span class="line-through text-gray-400 text-xl sm:text-2xl mr-2">₹2,999</span>
+                            <span
+                                class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white">₹2,000</span>
+                            <span class="text-gray-500 font-medium ml-2 text-sm sm:text-base">onwards</span>
                         </div>
 
                         <div class="mb-6 relative z-10">
@@ -591,10 +593,10 @@
                             <span class="hi">पूरी सर्विस</span><span class="en">Full Service</span>
                         </p>
 
-                        <div class="mb-2 relative z-10 flex items-baseline">
-                            <span class="line-through text-gray-500 text-2xl mr-2">₹8,999</span>
-                            <span class="text-4xl font-extrabold text-white">₹4,449</span>
-                            <span class="text-gray-400 font-medium ml-2">onwards</span>
+                        <div class="mb-2 relative z-10 flex items-baseline flex-wrap">
+                            <span class="line-through text-gray-500 text-xl sm:text-2xl mr-2">₹8,999</span>
+                            <span class="text-3xl sm:text-4xl font-extrabold text-white">₹4,449</span>
+                            <span class="text-gray-400 font-medium ml-2 text-sm sm:text-base">onwards</span>
                         </div>
 
                         <div class="mb-6 relative z-10">
@@ -1045,11 +1047,11 @@
     </footer>
 
     <!-- Floating AI Chat Widget -->
-    <div id="chat-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div id="chat-widget" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end">
 
         <!-- Chat Window (Hidden by default) -->
         <div id="chat-window"
-            class="hidden w-80 sm:w-96 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 mb-4 overflow-hidden flex-col h-[450px] transition-all duration-300 transform origin-bottom-right">
+            class="hidden w-[calc(100vw-2rem)] sm:w-96 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-800 mb-4 overflow-hidden flex-col h-[400px] sm:h-[450px] max-h-[80vh] transition-all duration-300 transform origin-bottom-right">
             <!-- Header -->
             <div class="bg-brand-600 p-4 text-white flex justify-between items-center shadow-md z-10">
                 <div class="flex items-center gap-2">
